@@ -13,6 +13,9 @@ namespace SMS_Program
             int initRoundNumber = 0;
             bool isValid = false;
             int modeChoice = 0;
+            int initMaxDigits = 0;
+            int initMinDigits = 0;
+            int maxRows = 0;
             bool tryAgain = true;
 
             // The code provided will print ‘Hello World’ to the console.
@@ -66,8 +69,125 @@ namespace SMS_Program
                     }
                     else if (modeChoice == 3)
                     {
-                        Console.WriteLine("This feature is not implemented yet");
-                        continue;
+                        Console.WriteLine("How many rounds do you want? For speed readings I reccomend a high number of rounds, minimum of 10.");
+                        int userInputInt = 0;
+                        tryAgain = true;
+                        while (tryAgain) //making sure try loop repeats
+                        {
+                            try
+                            {
+                                userInput = Console.ReadLine();
+                                userInputInt = int.Parse(userInput);
+                                tryAgain = false;
+                            }
+                            catch (FormatException e)
+                            {
+                                Console.WriteLine(e.Message + " Please enter an int.");
+                                continue;
+
+                            }
+                        }
+
+                        initRoundNumber = userInputInt;
+
+                        Console.WriteLine("What are the max amount of digits do you want? The minimum is 1, and max is 7.");
+                        userInputInt = 0;
+                        tryAgain = true;
+                        while (tryAgain) //making sure try loop repeats
+                        {
+                            try
+                            {
+                                userInput = Console.ReadLine();
+                                userInputInt = int.Parse(userInput);
+                                
+                            }
+                            catch (FormatException e)
+                            {
+                                Console.WriteLine(e.Message + " Please enter an int.");
+                                continue;
+
+                            }
+                            if (userInputInt < 1)
+                            {
+                                Console.WriteLine("The minimum is 1.");
+                                continue;
+                            }
+                            else if (userInputInt > 7)
+                            {
+                                Console.WriteLine("The maximum is 7.");
+                                continue;
+                            }
+                            else
+                            {
+                                tryAgain = false;
+                            }
+                        }
+
+                        initMaxDigits = userInputInt;
+
+                        Console.WriteLine("What are the min amount of digits do you want? The minimum is 1,and the max is the max you entered  previous.");
+                        userInputInt = 0;
+                        tryAgain = true;
+                        while (tryAgain) //making sure try loop repeats
+                        {
+                            try
+                            {
+                                userInput = Console.ReadLine();
+                                userInputInt = int.Parse(userInput);
+                            }
+                            catch (FormatException e)
+                            {
+                                Console.WriteLine(e.Message + " Please enter an int.");
+                                continue;
+                            }
+                            if (userInputInt < 1)
+                            {
+                                Console.WriteLine("The minimum is 1.");
+                                continue;
+                            }
+                            else if (userInputInt > initMaxDigits)
+                            {
+                                Console.WriteLine("The minimum is " + initMaxDigits);
+                                continue;
+                            }
+                            else
+                            {
+                                tryAgain = false;
+                            }
+                        }
+
+                        initMinDigits = userInputInt;
+
+                        Console.WriteLine("What are the max amount of rows do you want? The minimum is 2.");
+                        userInputInt = 0;
+                        tryAgain = true;
+                        while (tryAgain) //making sure try loop repeats
+                        {
+                            try
+                            {
+                                userInput = Console.ReadLine();
+                                userInputInt = int.Parse(userInput);
+
+                            }
+                            catch (FormatException e)
+                            {
+                                Console.WriteLine(e.Message + " Please enter an int.");
+                                continue;
+
+                            }
+                            if (userInputInt < 2)
+                            {
+                                Console.WriteLine("The minimum is 2.");
+                                continue;
+                            }
+                            else
+                            {
+                                tryAgain = false;
+                            }
+                        }
+
+                        maxRows = userInputInt;
+
                     }
                     else
                     {
@@ -77,12 +197,12 @@ namespace SMS_Program
                     isValid = true;
                     
                 }
-                speedMathmaticsRun(initRoundNumber, modeChoice);
+                speedMathmaticsRun(initRoundNumber, modeChoice, initMaxDigits, initMinDigits, maxRows);
             }
             
         }
 
-        public static void speedMathmaticsRun(int initRoundNumber, int modeChoice)
+        public static void speedMathmaticsRun(int initRoundNumber, int modeChoice, int initMaxDigits, int initMinDigits, int maxRows)
         {
             //Method that actually does the running of the mathmatics problems.
 
@@ -100,14 +220,17 @@ namespace SMS_Program
                 Console.WriteLine();
 
                 Tuple<int, string> currentRoundProblem;
-
                 if (modeChoice == 1) //Grabs the correct int and string from the correct method. All of these methods return an int and a string tuple, but some of them need additional information such as max number length or a max number of rows.
                 {
                     currentRoundProblem = additionSpeedRead();
                 }
-                else
+                else if (modeChoice == 2)
                 {
                     currentRoundProblem = subtractionSpeedRead();
+                }
+                else
+                {
+                    currentRoundProblem = additionProblems(initMaxDigits, initMinDigits, maxRows);
                 }
 
                 int answer = currentRoundProblem.Item1;
@@ -184,7 +307,7 @@ namespace SMS_Program
 
             if (userChoiceInt == 1)
             {
-                speedMathmaticsRun(initRoundNumber, modeChoice);
+                speedMathmaticsRun(initRoundNumber, modeChoice, initMaxDigits, initMinDigits, maxRows);
             }
             else if (userChoiceInt == 2)
             {
@@ -204,7 +327,6 @@ namespace SMS_Program
         public static Tuple<int, string> additionSpeedRead()
         {
             
-            List<object> problemOutput = new List<object>();
 
             Random rnd = new Random();
 
@@ -221,9 +343,6 @@ namespace SMS_Program
 
             string problemString = a + "\n-\n"+ b;
 
-            problemOutput.Add(answer);
-
-            problemOutput.Add(problemString);
 
             return Tuple.Create(answer, problemString);
 
@@ -232,7 +351,7 @@ namespace SMS_Program
         public static Tuple<int, string> subtractionSpeedRead()
         {
 
-            List<object> problemOutput = new List<object>();
+          
 
             Random rnd = new Random();
 
@@ -249,9 +368,6 @@ namespace SMS_Program
 
             string problemString = a + "\n-\n" + b;
 
-            problemOutput.Add(answer);
-
-            problemOutput.Add(problemString);
 
             return Tuple.Create(answer, problemString);
 
@@ -259,9 +375,56 @@ namespace SMS_Program
         //consider asking player of they wanna save the round number, max digitsm and min digits for next time. Only one file at first, but tlater suport more. Save it as a simple yaml
 
         // Add a Complement Problem option for purely learning complements (9 = 1, 6 = 4, 2 = 8, etc)
-        /* private static void AdditionProblems(int initMaxDigits, int initMinDigits, out Array problemOutput)
+        public static Tuple<int, string> additionProblems(int initMaxDigits, int initMinDigits, int maxRows)
          {
+            var numbersList = new List<int>();
 
-         }*/
+            Random rnd = new Random();
+
+            string maxDigitString = new string('9', initMaxDigits);
+
+            int maxDigitInt = int.Parse(maxDigitString);
+
+            int minDigitInt = 1;
+
+            string problemString = "";
+
+            int answer = 0;
+
+            if (initMinDigits > 1)
+            {
+                initMaxDigits = initMaxDigits - 1; //this is to set the number of zeros to one less int, since we will be tacking on a 1
+                string minDigitStringZeros = new string('0', initMaxDigits); //Generate the needed number of 0's
+
+                string finalizedMinDigitString = "1" + minDigitStringZeros;
+
+                minDigitInt = int.Parse(finalizedMinDigitString);
+
+            }
+
+            for (int i = 1; i <= maxRows; i++)
+            {
+                int a = rnd.Next(minDigitInt, maxDigitInt);
+                numbersList.Add(a);
+
+                if (a.ToString().Length < maxDigitInt.ToString().Length)
+                {
+                    int difference = maxDigitInt.ToString().Length - a.ToString().Length;
+                    string spaces = new string(' ', difference);
+                    string fixedA = spaces + a;
+                    problemString = problemString + fixedA + "\n";
+                }
+                else
+                {
+                    problemString = problemString + a + "\n";
+                }
+                
+            }
+
+            answer = numbersList.Sum();
+
+            return Tuple.Create(answer, problemString);
+
+        }
     }
 }
