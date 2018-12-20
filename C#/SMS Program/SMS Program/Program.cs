@@ -21,9 +21,10 @@ namespace SMS_Program
             // The code provided will print ‘Hello World’ to the console.
             // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
             Console.WriteLine("Hello, welcome to the program. Please select what you want to study");
-            Console.WriteLine("1) Addition Speed Reading");
-            Console.WriteLine("2) Subtraction Speed Reading");
-            Console.WriteLine("3) Addition Problems");
+            Console.WriteLine("1) Complements Speed Reading");
+            Console.WriteLine("2) Addition Speed Reading");
+            Console.WriteLine("3) Subtraction Speed Reading");
+            Console.WriteLine("4) Addition Problems");
             
 
             while (isValid == false)
@@ -40,9 +41,9 @@ namespace SMS_Program
                    
                 }
                 
-                if (modeChoice <= 3)
+                if (modeChoice <= 4)
                 {
-                    if (modeChoice <= 2) //checking to make sure the user wants a speed read, which only needs the number of rounds rather than the number of digits as well.
+                    if (modeChoice <= 3) //checking to make sure the user wants a speed read, which only needs the number of rounds rather than the number of digits as well.
                     {
                         
                         Console.WriteLine("How many rounds do you want? For speed readings I reccomend a high number of rounds, minimum of 10.");
@@ -67,7 +68,7 @@ namespace SMS_Program
                         initRoundNumber = userInputInt;
 
                     }
-                    else if (modeChoice == 3)
+                    else if (modeChoice == 4)
                     {
                         Console.WriteLine("How many rounds do you want? For speed readings I reccomend a high number of rounds, minimum of 10.");
                         int userInputInt = 0;
@@ -214,6 +215,13 @@ namespace SMS_Program
 
             int winCount = 0;
             int loseCount = 0;
+
+            if (modeChoice == 1)
+            {
+                Console.WriteLine("Remember that you have to write the complement of the HIGHER number, IGNORE the lower one. This is to renforce complement speed-reading.");
+                Console.ReadKey();
+            }
+
             for (int i = 1; i <= initRoundNumber; i++)
             {
                 Console.WriteLine("Current Round:" + i + "/" + initRoundNumber);
@@ -222,11 +230,18 @@ namespace SMS_Program
                 Tuple<int, string> currentRoundProblem;
                 if (modeChoice == 1) //Grabs the correct int and string from the correct method. All of these methods return an int and a string tuple, but some of them need additional information such as max number length or a max number of rows.
                 {
-                    currentRoundProblem = additionSpeedRead();
+                    currentRoundProblem = complementSpeedRead();
+                    
                 }
                 else if (modeChoice == 2)
                 {
+                    currentRoundProblem = additionSpeedRead();
+                    
+                }
+                else if (modeChoice == 3)
+                {
                     currentRoundProblem = subtractionSpeedRead();
+                    
                 }
                 else
                 {
@@ -321,6 +336,34 @@ namespace SMS_Program
 
 
 
+
+        }
+
+        public static Tuple<int, string> complementSpeedRead()
+        {
+
+
+            Random rnd = new Random();
+
+            int a = rnd.Next(1, 9);
+
+            int b = rnd.Next(1, 9);
+
+            int answer = 0;
+
+            if (a >= b)
+            {
+                answer = 10 - a;
+            }
+            else if (b > a)
+            {
+                answer = 10 - b;
+            }
+
+            string problemString = a + "\n-\n" + b;
+
+
+            return Tuple.Create(answer, problemString);
 
         }
 
