@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SMS_Program
+//Consider making an option to generate a pdf of the generated problems for printing, that way the user can print out randomly generated math problems! https://ironpdf.com/
 {
     class Program
     {
@@ -25,7 +26,8 @@ namespace SMS_Program
             Console.WriteLine("2) Addition Speed Reading");
             Console.WriteLine("3) Subtraction Speed Reading");
             Console.WriteLine("4) Addition Problems");
-            
+            Console.WriteLine("5) Subtraction Problems (easy)");
+
 
             while (isValid == false)
             {
@@ -41,7 +43,7 @@ namespace SMS_Program
                    
                 }
                 
-                if (modeChoice <= 4)
+                if (modeChoice <= 5)
                 {
                     if (modeChoice <= 3) //checking to make sure the user wants a speed read, which only needs the number of rounds rather than the number of digits as well.
                     {
@@ -68,9 +70,9 @@ namespace SMS_Program
                         initRoundNumber = userInputInt;
 
                     }
-                    else if (modeChoice == 4)
+                    else if (modeChoice >= 5)
                     {
-                        Console.WriteLine("How many rounds do you want? For speed readings I reccomend a high number of rounds, minimum of 10.");
+                        Console.WriteLine("How many rounds do you want?");
                         int userInputInt = 0;
                         tryAgain = true;
                         while (tryAgain) //making sure try loop repeats
@@ -218,9 +220,30 @@ namespace SMS_Program
 
             if (modeChoice == 1)
             {
-                Console.WriteLine("Remember that you have to write the complement of the HIGHER number, IGNORE the lower one. This is to renforce complement speed-reading.");
+                Console.WriteLine("Remember that you have to write the complement of the HIGHER number and IGNORE the lower one. This is to renforce complement speed-reading.");
                 Console.ReadKey();
             }
+            else if (modeChoice == 2)
+            {
+                Console.WriteLine("For these exercises, if a number >= 10 ignore the tens place and just type the ones place.");
+                Console.ReadKey();
+            }
+            else if (modeChoice == 3)
+            {
+                Console.WriteLine("Just like the addition speed read, for these exercises, if a number >= 0 don't bother typing the negative symbol and just type the positive number. This reinforces the number *strike out previous number* method as mentioned in the book");
+                Console.ReadKey();
+            }
+            else if (modeChoice == 4)
+            {
+                Console.WriteLine("This is nothing more than regular addition! Just remmeber to go right to left :)");
+                Console.ReadKey();
+            }
+            else if (modeChoice == 5)
+            {
+                Console.WriteLine("This is easy subtraction! By easy, I mean you don't have to worry about the answer being a negative number, no matter how many rows you have!");
+                Console.ReadKey();
+            }
+
 
             for (int i = 1; i <= initRoundNumber; i++)
             {
@@ -243,9 +266,14 @@ namespace SMS_Program
                     currentRoundProblem = subtractionSpeedRead();
                     
                 }
-                else
+                else if (modeChoice == 4)
                 {
                     currentRoundProblem = additionProblems(initMaxDigits, initMinDigits, maxRows);
+
+                }
+                else
+                {
+                    currentRoundProblem = subtractionProblems(initMaxDigits, initMinDigits, maxRows);
                 }
 
                 int answer = currentRoundProblem.Item1;
@@ -287,7 +315,7 @@ namespace SMS_Program
                 {
                     loseCount++;
 
-                    Console.WriteLine("You got it wrong...");
+                    Console.WriteLine("You got it wrong... answer was: " + answer);
                     Console.WriteLine();
                 }
 
@@ -393,9 +421,6 @@ namespace SMS_Program
 
         public static Tuple<int, string> subtractionSpeedRead()
         {
-
-          
-
             Random rnd = new Random();
 
             int a = rnd.Next(1, 9);
@@ -404,7 +429,7 @@ namespace SMS_Program
 
             int answer = a - b;
 
-            if (answer <= 0)
+            if (answer < 0)
             {
                 answer = answer + 10;
             }
@@ -469,5 +494,80 @@ namespace SMS_Program
             return Tuple.Create(answer, problemString);
 
         }
+
+        public static Tuple<int, string> subtractionProblems(int initMaxDigits, int initMinDigits, int maxRows)
+        {
+            var numbersList = new List<int>();
+
+            Random rnd = new Random();
+
+            string maxDigitString = new string('9', initMaxDigits);
+
+            int maxDigitInt = int.Parse(maxDigitString);
+
+            int minDigitInt = 1;
+
+            string problemString = "";
+
+            int answer = 0;
+
+            if (initMinDigits > 1)
+            {
+                initMaxDigits = initMaxDigits - 1; //this is to set the number of zeros to one less int, since we will be tacking on a 1
+                string minDigitStringZeros = new string('0', initMaxDigits); //Generate the needed number of 0's
+
+                string finalizedMinDigitString = "1" + minDigitStringZeros;
+
+                minDigitInt = int.Parse(finalizedMinDigitString);
+
+            }
+
+            int a = rnd.Next(minDigitInt, maxDigitInt); // This is initializing the "top" number. This is so I can manipulate this number more easily if I need to (you'll see below )
+            if (a.ToString().Length < maxDigitInt.ToString().Length)
+            {
+                int difference = maxDigitInt.ToString().Length - a.ToString().Length;
+                string spaces = new string(' ', difference);
+                string fixedA = spaces + a;
+                problemString = problemString + fixedA + "\n";
+            }
+            else
+            {
+                string dashes = new string('-', maxDigitInt.ToString().Length);
+            }
+
+
+            for (int i = 1; i <= maxRows - 1; i++) //-1 because a was already added to the problem string
+            {
+                int b = rnd.Next(minDigitInt, maxDigitInt);
+                numbersList.Add(b);
+
+                if (b.ToString().Length < maxDigitInt.ToString().Length)
+                {
+                    int difference = maxDigitInt.ToString().Length - b.ToString().Length;
+                    string spaces = new string(' ', difference);
+                    string fixedB = spaces + b;
+                    problemString = problemString + fixedB + "\n";
+                }
+                else
+                {
+                    problemString = problemString + b + "\n";
+                }
+
+            }
+
+            int bAddedTogether = numbersList.Sum();
+
+            answer = a - bAddedTogether;
+            while (answer < 0) //this makes sure that the number is a positive one. I do this in order to ensure the user can do long numbers without having to scrap it partway through when they realize their answer will be negative (in order to flip it around)
+            {
+                a = a + rnd.Next(1, 100);
+                answer = a - bAddedTogether;
+            }
+
+
+            return Tuple.Create(answer, problemString);
+
+        }
+
     }
 }
