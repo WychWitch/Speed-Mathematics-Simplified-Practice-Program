@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace SMS_Program
 //Consider making an option to generate a pdf of the generated problems for printing, that way the user can print out randomly generated math problems! https://ironpdf.com/
+//Maybe just export it as markdown and then use pandoc to convert it. That'll make formatting a lot easier maybe
+
+//ATTENTION atm subtraction is completely broken, as the first number (a) is never actually added to the problem list, and since I alter a in order to ensure the number isn't negative, its not as simple as adding it when i first declared a.
+// What I'm going to need to do is to expose the b number list, remove the addition of b to the problem list, and once the a is adjusted for negative numbers, add a and then iterate over the b number list to add each one to the problem list. 
 {
     class Program
     {
