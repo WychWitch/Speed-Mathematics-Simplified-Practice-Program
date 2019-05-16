@@ -480,7 +480,7 @@ namespace SMS_Program
 
             }
 
-            numbersList = numbersList.OrderBy(p => p).ToList();
+            numbersList = numbersList.OrderByDescending(p => p).ToList();
             numbersList.Reverse();
             foreach (int i in numbersList)
             {
@@ -558,7 +558,7 @@ namespace SMS_Program
 
                 }
 
-                numbersList = numbersList.OrderBy(p => p).ToList();
+                numbersList = numbersList.OrderByDescending(p => p).ToList();
                 numbersList.Reverse();
                 foreach(int i in numbersList)
                 {
