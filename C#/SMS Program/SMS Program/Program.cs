@@ -72,7 +72,7 @@ namespace SMS_Program
                         initRoundNumber = userInputInt;
 
                     }
-                    else if (modeChoice >= 5)
+                    else if (modeChoice >= 4)
                     {
                         Console.WriteLine("How many rounds do you want?");
                         int userInputInt = 0;
@@ -472,23 +472,29 @@ namespace SMS_Program
 
             }
 
-            for (int i = 1; i <= maxRows; i++)
+            for (int i = 1; i <= maxRows - 1; i++) //-1 because a will be added to problem string later
             {
                 int a = rnd.Next(minDigitInt, maxDigitInt);
                 numbersList.Add(a);
 
-                if (a.ToString().Length < maxDigitInt.ToString().Length)
+
+            }
+
+            numbersList = numbersList.OrderBy(p => p).ToList();
+            numbersList.Reverse();
+            foreach (int i in numbersList)
+            {
+                if (i.ToString().Length < maxDigitInt.ToString().Length)
                 {
-                    int difference = maxDigitInt.ToString().Length - a.ToString().Length;
+                    int difference = maxDigitInt.ToString().Length - i.ToString().Length;
                     string spaces = new string(' ', difference);
-                    string fixedA = spaces + a;
+                    string fixedA = spaces + i;
                     problemString = problemString + fixedA + "\n";
                 }
                 else
                 {
-                    problemString = problemString + a + "\n";
+                    problemString = problemString.Insert(0, i + "\n");
                 }
-                
             }
 
             answer = numbersList.Sum();
@@ -525,49 +531,70 @@ namespace SMS_Program
             }
 
             int a = rnd.Next(minDigitInt, maxDigitInt); // This is initializing the "top" number. This is so I can manipulate this number more easily if I need to (you'll see below )
+            
+
             if (a.ToString().Length < maxDigitInt.ToString().Length)
             {
                 int difference = maxDigitInt.ToString().Length - a.ToString().Length;
                 string spaces = new string(' ', difference);
                 string fixedA = spaces + a;
-                //problemString = problemString + fixedA + "\n";
             }
             else
             {
                 string dashes = new string('-', maxDigitInt.ToString().Length);
             }
 
-
-            for (int i = 1; i <= maxRows - 1; i++) //-1 because a was already added to the problem string
+            int bAddedTogether;
+            int attempts = 0;
+            while (true)
             {
-                int b = rnd.Next(minDigitInt, maxDigitInt);
-                numbersList.Add(b);
-
-                if (b.ToString().Length < maxDigitInt.ToString().Length)
+                numbersList = new List<int>();
+                problemString = "";
+                for (int i = 1; i <= maxRows - 1; i++) //-1 because a will be added to problem string later
                 {
-                    int difference = maxDigitInt.ToString().Length - b.ToString().Length;
-                    string spaces = new string(' ', difference);
-                    string fixedB = spaces + b;
-                    problemString = problemString + fixedB + "\n";
+                    int b = rnd.Next(minDigitInt, maxDigitInt);
+                    numbersList.Add(b);
+
+
+                }
+
+                numbersList = numbersList.OrderBy(p => p).ToList();
+                numbersList.Reverse();
+                foreach(int i in numbersList)
+                {
+                    if (i.ToString().Length < maxDigitInt.ToString().Length)
+                    {
+                        int difference = maxDigitInt.ToString().Length - i.ToString().Length;
+                        string spaces = new string(' ', difference);
+                        string fixedB = spaces + i;
+                        problemString = problemString + fixedB + "\n";
+                    }
+                    else
+                    {
+                        problemString = problemString.Insert(0, i + "\n");
+                    }
+                }
+
+                bAddedTogether = numbersList.Sum();
+
+                if (bAddedTogether < maxDigitInt) //make sure bAddedTogether is less than Max Digits
+                {
+                    break;
                 }
                 else
                 {
-                    problemString = problemString + b + "\n";
+                    attempts += 1;
+                    continue; //restarts if it's larger than Max Digits
                 }
-
+                
             }
 
-            int bAddedTogether = numbersList.Sum();
+
+            a = rnd.Next(bAddedTogether, maxDigitInt);
 
             answer = a - bAddedTogether;
 
-            while (answer < 0) //this makes sure that the number is a positive one. I do this in order to ensure the user can do long numbers without having to scrap it partway through when they realize their answer will be negative (in order to flip it around)
-            {
-                a = a + rnd.Next(1, 100);
-                answer = a - bAddedTogether;
-            }
-
-            string formattedA = a + "\n" + "-----" + "\n"; //this formats that the 'a' number is formatted correctly and is ready to be inserted into the problem string
+            string formattedA = a + "\n" + "----" + "\n"; //this formats that the 'a' number is formatted correctly and is ready to be inserted into the problem string
 
             problemString = problemString.Insert(0, formattedA);
 
