@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SMS_Program
+//Eventually include a timer function and display how long it took the player to finish and the current highscore for that limit
 //Consider making an option to generate a pdf of the generated problems for printing, that way the user can print out randomly generated math problems! https://ironpdf.com/
-//Maybe just export it as markdown and then use pandoc to convert it. That'll make formatting a lot easier maybe
+    //Maybe just export it as markdown and then use pandoc to convert it. That'll make formatting a lot easier maybe
 
-//ATTENTION atm subtraction is completely broken, as the first number (a) is never actually added to the problem list, and since I alter a in order to ensure the number isn't negative, its not as simple as adding it when i first declared a.
-// What I'm going to need to do is to expose the b number list, remove the addition of b to the problem list, and once the a is adjusted for negative numbers, add a and then iterate over the b number list to add each one to the problem list. 
+
 {
     class Program
     {
@@ -23,8 +23,6 @@ namespace SMS_Program
             int maxRows = 0;
             bool tryAgain = true;
 
-            // The code provided will print ‘Hello World’ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
             Console.WriteLine("Hello, welcome to the program. Please select what you want to study");
             Console.WriteLine("1) Complements Speed Reading");
             Console.WriteLine("2) Addition Speed Reading");
@@ -532,7 +530,7 @@ namespace SMS_Program
                 int difference = maxDigitInt.ToString().Length - a.ToString().Length;
                 string spaces = new string(' ', difference);
                 string fixedA = spaces + a;
-                problemString = problemString + fixedA + "\n";
+                //problemString = problemString + fixedA + "\n";
             }
             else
             {
@@ -562,12 +560,16 @@ namespace SMS_Program
             int bAddedTogether = numbersList.Sum();
 
             answer = a - bAddedTogether;
+
             while (answer < 0) //this makes sure that the number is a positive one. I do this in order to ensure the user can do long numbers without having to scrap it partway through when they realize their answer will be negative (in order to flip it around)
             {
                 a = a + rnd.Next(1, 100);
                 answer = a - bAddedTogether;
             }
 
+            string formattedA = a + "\n" + "-----" + "\n"; //this formats that the 'a' number is formatted correctly and is ready to be inserted into the problem string
+
+            problemString = problemString.Insert(0, formattedA);
 
             return Tuple.Create(answer, problemString);
 
