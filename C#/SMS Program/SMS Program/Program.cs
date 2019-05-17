@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IronPdf;
+using Medallion;
 
 namespace SMS_Program
 //Eventually include a timer function and display how long it took the player to finish and the current highscore for that limit
-//Consider making an option to generate a pdf of the generated problems for printing, that way the user can print out randomly generated math problems! https://ironpdf.com/
-    //Maybe just export it as markdown and then use pandoc to convert it. That'll make formatting a lot easier maybe
+//TODO: get the problem sheet function working where you can freely select what to generate, and ask the user if you want to return to min menu
 
 
 {
@@ -24,6 +25,7 @@ namespace SMS_Program
             bool tryAgain = true;
 
             Console.WriteLine("Hello, welcome to the program. Please select what you want to study");
+            Console.WriteLine("0) Generate Problem Sheet");
             Console.WriteLine("1) Complements Speed Reading");
             Console.WriteLine("2) Addition Speed Reading");
             Console.WriteLine("3) Subtraction Speed Reading");
@@ -46,8 +48,13 @@ namespace SMS_Program
                 }
                 
                 if (modeChoice <= 5)
-                {
-                    if (modeChoice <= 3) //checking to make sure the user wants a speed read, which only needs the number of rounds rather than the number of digits as well.
+                {   
+                    if (modeChoice == 0)
+                    {
+                        Console.WriteLine("generating pdf");
+                        generatePDF(1, 1, 1, 1, 1);
+                    }
+                    if (modeChoice <= 3 & modeChoice != 0) //checking to make sure the user wants a speed read, which only needs the number of rounds rather than the number of digits as well.
                     {
                         
                         Console.WriteLine("How many rounds do you want? For speed readings I reccomend a high number of rounds, minimum of 10.");
@@ -369,15 +376,40 @@ namespace SMS_Program
 
         }
 
+        public static void generatePDF (int initRoundNumber, int modeChoice, int initMaxDigits, int initMinDigits, int maxRows)
+        {
+
+            IronPdf.HtmlToPdf Renderer = new IronPdf.HtmlToPdf();
+
+            Renderer.PrintOptions.CssMediaType = PdfPrintOptions.PdfCssMediaType.Print;
+
+            string pdfString = "<body><ul style=\"list-style-type: none; column-count: 4; column - gap: 20px; -moz-column-count: 4;-moz-column-gap: 20px -webkit-column-count: 4; -webkit-column-gap: 20px; font-size: 20px;text-align: right;\">"; //the html + css code for formatting the string
+
+            Tuple<int, string> currentRoundProblem;
+
+            for (int i = 1; i <= 20; i++)
+            {
+                currentRoundProblem = subtractionProblems(3,1,3);
+                string problemText = currentRoundProblem.Item2;
+                pdfString += "<li style=\"float: left;width: 50 %;padding: 25px 25px 100px 50px \">" + problemText.Replace("\n", "<br>") + "</li>"; //replacing /n with html-friendly <br>
+            }
+            pdfString += "</ul></body>";    
+
+            var PDF = Renderer.RenderHtmlAsPdf(pdfString);
+            var OutputPath = "html-string.pdf";
+            
+            PDF.SaveAs(OutputPath);
+            System.Diagnostics.Process.Start(OutputPath);
+
+        }
+
         public static Tuple<int, string> complementSpeedRead()
         {
 
 
-            Random rnd = new Random();
+            int a = Rand.Next(1, 9);
 
-            int a = rnd.Next(1, 9);
-
-            int b = rnd.Next(1, 9);
+            int b = Rand.Next(1, 9);
 
             int answer = 0;
 
@@ -401,11 +433,9 @@ namespace SMS_Program
         {
             
 
-            Random rnd = new Random();
+            int a = Rand.Next(1,9);
 
-            int a = rnd.Next(1,9);
-
-            int b = rnd.Next(1, 9);
+            int b = Rand.Next(1, 9);
 
             int answer = a + b;
 
@@ -423,11 +453,10 @@ namespace SMS_Program
 
         public static Tuple<int, string> subtractionSpeedRead()
         {
-            Random rnd = new Random();
 
-            int a = rnd.Next(1, 9);
+            int a = Rand.Next(1, 9);
 
-            int b = rnd.Next(1, 9);
+            int b = Rand.Next(1, 9);
 
             int answer = a - b;
 
@@ -449,7 +478,7 @@ namespace SMS_Program
          {
             var numbersList = new List<int>();
 
-            Random rnd = new Random();
+            
 
             string maxDigitString = new string('9', initMaxDigits);
 
@@ -472,9 +501,9 @@ namespace SMS_Program
 
             }
 
-            for (int i = 1; i <= maxRows - 1; i++) //-1 because a will be added to problem string later
+            for (int i = 1; i <= maxRows; i++) 
             {
-                int a = rnd.Next(minDigitInt, maxDigitInt);
+                int a = Rand.Next(minDigitInt, maxDigitInt);
                 numbersList.Add(a);
 
 
@@ -507,8 +536,6 @@ namespace SMS_Program
         {
             var numbersList = new List<int>();
 
-            Random rnd = new Random();
-
             string maxDigitString = new string('9', initMaxDigits);
 
             int maxDigitInt = int.Parse(maxDigitString);
@@ -530,7 +557,7 @@ namespace SMS_Program
 
             }
 
-            int a = rnd.Next(minDigitInt, maxDigitInt); // This is initializing the "top" number. This is so I can manipulate this number more easily if I need to (you'll see below )
+            int a = Rand.Next(minDigitInt, maxDigitInt); // This is initializing the "top" number. This is so I can manipulate this number more easily if I need to (you'll see below )
             
 
             if (a.ToString().Length < maxDigitInt.ToString().Length)
@@ -552,7 +579,7 @@ namespace SMS_Program
                 problemString = "";
                 for (int i = 1; i <= maxRows - 1; i++) //-1 because a will be added to problem string later
                 {
-                    int b = rnd.Next(minDigitInt, maxDigitInt);
+                    int b = Rand.Next(minDigitInt, maxDigitInt);
                     numbersList.Add(b);
 
 
@@ -590,7 +617,7 @@ namespace SMS_Program
             }
 
 
-            a = rnd.Next(bAddedTogether, maxDigitInt);
+            a = Rand.Next(bAddedTogether, maxDigitInt);
 
             answer = a - bAddedTogether;
 
