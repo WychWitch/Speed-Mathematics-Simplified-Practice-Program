@@ -16,13 +16,10 @@ namespace SMS_Program
     {
         static void Main()
         {
-            int initRoundNumber = 0;
+            
             bool isValid = false;
-            int modeChoice = 0;
-            int initMaxDigits = 0;
-            int initMinDigits = 0;
-            int maxRows = 0;
-            bool tryAgain = true;
+
+            int modeChoice;
 
             Console.WriteLine("Hello, welcome to the program. Please select what you want to study");
             Console.WriteLine("0) Generate Problem Sheet");
@@ -36,6 +33,7 @@ namespace SMS_Program
             while (isValid == false)
             {
                 string userInput = Console.ReadLine();
+
                 try //making sure the user inputs a valid int
                 {
                     modeChoice = int.Parse(userInput); // saving the mode
@@ -46,17 +44,68 @@ namespace SMS_Program
                     continue;
                    
                 }
-                
-                if (modeChoice <= 5)
-                {   
-                    if (modeChoice == 0)
+
+                if (modeChoice == 0)
+                {
+                    Console.WriteLine("[Please select an option to print.]");
+                    Console.WriteLine("1) Complements Speed Reading");
+                    Console.WriteLine("2) Addition Speed Reading");
+                    Console.WriteLine("3) Subtraction Speed Reading");
+                    Console.WriteLine("4) Addition Problems");
+                    Console.WriteLine("5) Subtraction Problems (easy)");
+
+
+                    while (isValid == false)
                     {
-                        Console.WriteLine("generating pdf");
-                        generatePDF(1, 1, 1, 1, 1);
+                        userInput = Console.ReadLine();
+                        try //making sure the user inputs a valid int
+                        {
+                            modeChoice = int.Parse(userInput); // saving the mode
+                        }
+                        catch (FormatException e)
+                        {
+                            Console.WriteLine(e.Message + " Please enter an int.");
+                            continue;
+
+                        }
+                        isValid = true;
                     }
+
+                    var selectionList = selection(modeChoice);
+                    generatePDF(selectionList[0], selectionList[1], selectionList[2], selectionList[3], selectionList[4]);
+                    
+
+
+
+                }
+                else
+                {
+                    var selectionList = selection(modeChoice);
+                    speedMathmaticsRun(selectionList[0], selectionList[1], selectionList[2], selectionList[3], selectionList[4]);
+                    isValid = true;
+                }
+
+
+            }
+            
+        }
+
+        public static List<int> selection(int modeChoice)
+        {
+            int initRoundNumber = 0;
+            int initMaxDigits = 0;
+            int initMinDigits = 0;
+            int maxRows = 0;
+            bool tryAgain = true;
+            bool isValid = false;
+
+            while (isValid == false)
+            {
+                if (modeChoice <= 5)
+                {
                     if (modeChoice <= 3 & modeChoice != 0) //checking to make sure the user wants a speed read, which only needs the number of rounds rather than the number of digits as well.
                     {
-                        
+
                         Console.WriteLine("How many rounds do you want? For speed readings I reccomend a high number of rounds, minimum of 10.");
                         int userInputInt = 0;
                         tryAgain = true;
@@ -64,7 +113,7 @@ namespace SMS_Program
                         {
                             try
                             {
-                                userInput = Console.ReadLine();
+                                string userInput = Console.ReadLine();
                                 userInputInt = int.Parse(userInput);
                                 tryAgain = false;
                             }
@@ -75,7 +124,7 @@ namespace SMS_Program
 
                             }
                         }
-                        
+
                         initRoundNumber = userInputInt;
 
                     }
@@ -88,7 +137,7 @@ namespace SMS_Program
                         {
                             try
                             {
-                                userInput = Console.ReadLine();
+                                string userInput = Console.ReadLine();
                                 userInputInt = int.Parse(userInput);
                                 tryAgain = false;
                             }
@@ -109,9 +158,9 @@ namespace SMS_Program
                         {
                             try
                             {
-                                userInput = Console.ReadLine();
+                                string userInput = Console.ReadLine();
                                 userInputInt = int.Parse(userInput);
-                                
+
                             }
                             catch (FormatException e)
                             {
@@ -144,7 +193,7 @@ namespace SMS_Program
                         {
                             try
                             {
-                                userInput = Console.ReadLine();
+                                string userInput = Console.ReadLine();
                                 userInputInt = int.Parse(userInput);
                             }
                             catch (FormatException e)
@@ -177,7 +226,7 @@ namespace SMS_Program
                         {
                             try
                             {
-                                userInput = Console.ReadLine();
+                                string userInput = Console.ReadLine();
                                 userInputInt = int.Parse(userInput);
 
                             }
@@ -207,11 +256,19 @@ namespace SMS_Program
                         continue;
                     }
                     isValid = true;
-                    
+
                 }
-                speedMathmaticsRun(initRoundNumber, modeChoice, initMaxDigits, initMinDigits, maxRows);
             }
-            
+
+            var returnList = new List<int>();
+
+            returnList.Add(initRoundNumber);
+            returnList.Add(modeChoice);
+            returnList.Add(initMaxDigits);
+            returnList.Add(initMinDigits);
+            returnList.Add(maxRows);
+
+            return returnList;
         }
 
         public static void speedMathmaticsRun(int initRoundNumber, int modeChoice, int initMaxDigits, int initMinDigits, int maxRows)
@@ -383,21 +440,80 @@ namespace SMS_Program
 
             Renderer.PrintOptions.CssMediaType = PdfPrintOptions.PdfCssMediaType.Print;
 
-            string pdfString = "<body><ul style=\"list-style-type: none; column-count: 4; column - gap: 20px; -moz-column-count: 4;-moz-column-gap: 20px -webkit-column-count: 4; -webkit-column-gap: 20px; font-size: 20px;text-align: right;\">"; //the html + css code for formatting the string
+            string pdfString = "<body><ul style=\"list-style-type: none; column-count: 4; column - gap: 20px; -moz-column-count: 4;-moz-column-gap: 20px -webkit-column-count: 4; -webkit-column-gap: 20px; font-size: 20px;text-align: right;\"><h1>PROBLEMS</h1>"; //the html + css code for formatting the string
+
+            string pdfStringAnswers = "<body><ul style=\"list-style-type: none; column-count: 4; column - gap: 20px; -moz-column-count: 4;-moz-column-gap: 20px -webkit-column-count: 4; -webkit-column-gap: 20px; font-size: 20px;text-align: right;\"><h1>ANSWERS</h1>";
 
             Tuple<int, string> currentRoundProblem;
 
-            for (int i = 1; i <= 20; i++)
+            for (int i = 1; i <= initRoundNumber; i++)
             {
-                currentRoundProblem = subtractionProblems(3,1,3);
-                string problemText = currentRoundProblem.Item2;
-                pdfString += "<li style=\"float: left;width: 50 %;padding: 25px 25px 100px 50px \">" + problemText.Replace("\n", "<br>") + "</li>"; //replacing /n with html-friendly <br>
+                if (modeChoice == 1)
+                {
+                    currentRoundProblem = complementSpeedRead();
+                    string problemText = currentRoundProblem.Item2;
+                    int answerText = currentRoundProblem.Item1;
+
+                    pdfString += "<li style=\"float: left;width: 50 %;padding: 25px 25px 100px 50px \"> <div style=\"color:red; font-size: 15px;\">" + i+".</div>" + problemText.Replace("\n", "<br>") + "</li>"; //replacing /n with html-friendly <br>
+
+                    pdfStringAnswers += "<li style=\"float: left;width: 50 %;padding: 25px 25px 100px 50px \"> <div style=\"color:red; font-size: 15px;\">" + i + ".</div>" + answerText + "</li>"; //replacing /n with html-friendly <br>
+                }
+                else if (modeChoice == 2)
+                {
+                    currentRoundProblem = additionSpeedRead();
+                    string problemText = currentRoundProblem.Item2;
+                    int answerText = currentRoundProblem.Item1;
+
+                    pdfString += "<li style=\"float: left;width: 50 %;padding: 25px 25px 100px 50px \"> <div style=\"color:red; font-size: 15px;\">" + i + ".</div>" + problemText.Replace("\n", "<br>") + "</li>"; //replacing /n with html-friendly <br>
+
+                    pdfStringAnswers += "<li style=\"float: left;width: 50 %;padding: 25px 25px 100px 50px \"> <div style=\"color:red; font-size: 15px;\">" + i + ".</div>" + answerText + "</li>"; //replacing /n with html-friendly <br>
+                }
+                else if (modeChoice == 3)
+                {
+                    currentRoundProblem = subtractionSpeedRead();
+                    string problemText = currentRoundProblem.Item2;
+                    int answerText = currentRoundProblem.Item1;
+
+                    pdfString += "<li style=\"float: left;width: 50 %;padding: 25px 25px 100px 50px \"> <div style=\"color:red; font-size: 15px;\">" + i + ".</div>" + problemText.Replace("\n", "<br>") + "</li>"; //replacing /n with html-friendly <br>
+
+                    pdfStringAnswers += "<li style=\"float: left;width: 50 %;padding: 25px 25px 100px 50px \"> <div style=\"color:red; font-size: 15px;\">" + i + ".</div>" + answerText + "</li>"; //replacing /n with html-friendly <br>
+                }
+                else if (modeChoice == 4)
+                {
+                    currentRoundProblem = additionProblems(initMaxDigits,initMinDigits,maxRows);
+                    string problemText = currentRoundProblem.Item2;
+                    int answerText = currentRoundProblem.Item1;
+
+                    pdfString += "<li style=\"float: left;width: 50 %;padding: 25px 25px 100px 50px \"> <div style=\"color:red; font-size: 15px;\">" + i + ".</div>" + problemText.Replace("\n", "<br>") + "</li>"; //replacing /n with html-friendly <br>
+
+                    pdfStringAnswers += "<li style=\"float: left;width: 50 %;padding: 25px 25px 100px 50px \"> <div style=\"color:red; font-size: 15px;\">" + i + ".</div>" + answerText + "</li>"; //replacing /n with html-friendly <br>
+                }
+                else if (modeChoice == 5)
+                {
+                    currentRoundProblem = subtractionProblems(initMaxDigits, initMinDigits, maxRows);
+                    string problemText = currentRoundProblem.Item2;
+                    int answerText = currentRoundProblem.Item1;
+
+                    pdfString += "<li style=\"float: left;width: 50 %;padding: 25px 25px 100px 50px \"> <div style=\"color:red; font-size: 15px;\">" + i + ".</div>" + problemText.Replace("\n", "<br>") + "</li>"; //replacing /n with html-friendly <br>
+
+                    pdfStringAnswers += "<li style=\"float: left;width: 50 %;padding: 25px 25px 100px 50px \"> <div style=\"color:red; font-size: 15px;\">" + i + ".</div>" + answerText + "</li>"; //replacing /n with html-friendly <br>
+                }
+             
+
+
             }
-            pdfString += "</ul></body>";    
+            pdfString += "</ul></body>";
+            pdfStringAnswers += "</ul></body>";
 
             var PDF = Renderer.RenderHtmlAsPdf(pdfString);
-            var OutputPath = "html-string.pdf";
+            var OutputPath = "Generated Problems.pdf";
             
+            PDF.SaveAs(OutputPath);
+            System.Diagnostics.Process.Start(OutputPath);
+
+            PDF = Renderer.RenderHtmlAsPdf(pdfStringAnswers);
+            OutputPath = "Generated Answers.pdf";
+
             PDF.SaveAs(OutputPath);
             System.Diagnostics.Process.Start(OutputPath);
 
