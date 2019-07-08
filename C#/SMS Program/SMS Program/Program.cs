@@ -12,7 +12,6 @@ namespace SMS_Program
 //Eventually include a timer function and display how long it took the player to finish and the current highscore for that limit
 //Sections of the book left to include: no-carry multiplication, short-hand division, accuracy (quick check and backup check) shortcuts(?) Aliquots Factors Proportionate Chage, Fractions, Decimals, Percentags, business arithmetic
 //---For accuracy problems, i think i'm going to generate and show the answer to a random problem, but the answer has a chance to be wrong (+ or - a random amount, or purposefully recreate common problems and bake them in(forgetting to subtract the component and instead adding it, vice versa)) I'm not sure yet
-//TODO add the current date and time so they can be differentiated
 
 
 {
@@ -475,10 +474,15 @@ namespace SMS_Program
             {
                 modeText = "SUBTRACTION";
             }
-            
-            string pdfString = "<body><h1 style=\"font-size: 40px;text-align: right;> " + modeText+" PROBLEMS</h1>"; //the html + css code for formatting the string
 
-            string pdfStringAnswers = "<body><h1 style=\"font-size: 40px;text-align: right;> " + modeText + " ANSWERS</h1>";
+            var time = DateTime.Now;
+
+            string formattedTime = time.ToString("yyyy-MM-dd, hh:mmtt");
+
+
+            string pdfString = "<body><h1 style=\"font-size: 40px;text-align: right;> " + modeText+ " PROBLEMS</h1><br><p style=\"font-size: 10px;text-align: right;>"+formattedTime+"</p>"; //the html + css code for formatting the string
+
+            string pdfStringAnswers = "<body><h1 style=\"font-size: 40px;text-align: right;> " + modeText + " ANSWERS</h1><br><p style=\"font-size: 10px;text-align: right;>" + formattedTime + "</p>";
 
             Tuple<int, string> currentRoundProblem;
 
@@ -683,9 +687,8 @@ namespace SMS_Program
             return Tuple.Create(answer, problemString);
 
         }
-        //consider asking player of they wanna save the round number, max digitsm and min digits for next time. Only one file at first, but tlater suport more. Save it as a simple yaml
+        //consider asking player if they wanna save the round number, max digitsm and min digits for next time. Only one file at first, but tlater suport more. Save it as a simple yaml
 
-        // Add a Complement Problem option for purely learning complements (9 = 1, 6 = 4, 2 = 8, etc)
         public static Tuple<int, string> additionProblems(int initMaxDigits, int initMinDigits, int maxRows)
          {
             var numbersList = new List<int>();
