@@ -10,8 +10,14 @@ using TheArtOfDev.HtmlRenderer.PdfSharp;
 
 namespace SMS_Program
 //Eventually include a timer function and display how long it took the player to finish and the current highscore for that limit
+
 //Sections of the book left to include: no-carry multiplication, short-hand division, accuracy (quick check and backup check) shortcuts(?) Aliquots Factors Proportionate Chage, Fractions, Decimals, Percentags, business arithmetic
+
 //---For accuracy problems, i think i'm going to generate and show the answer to a random problem, but the answer has a chance to be wrong (+ or - a random amount, or purposefully recreate common problems and bake them in(forgetting to subtract the component and instead adding it, vice versa)) I'm not sure yet
+
+// TODO IMPORTANT replace checking inputs with int.TryParse() or Int32.TryParse() it is so much better that what you;re doing rn
+
+// TODO add Subtraction next (w/o making sure the answer is positive)
 
 
 {
@@ -76,9 +82,6 @@ namespace SMS_Program
 
                     var selectionList = selection(modeChoice);
                     generatePDF(selectionList[0], selectionList[1], selectionList[2], selectionList[3], selectionList[4]);
-                    
-
-
 
                 }
                 else
@@ -472,7 +475,7 @@ namespace SMS_Program
             }
             else if (modeChoice == 5)
             {
-                modeText = "SUBTRACTION";
+                modeText = "SUBTRACTION (EASY)";
             }
 
             var time = DateTime.Now;
