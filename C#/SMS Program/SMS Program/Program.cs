@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using Medallion;
@@ -19,6 +20,10 @@ namespace SMS_Program
 
 // TODO add Subtraction next (w/o making sure the answer is positive)
 
+/*TODO improve EASY subtraction by giving a chance (50%?) that instead of adding a random number to the answer to make it 
+big enough to be positive, instead set one of the components to be set to a random number from 1 to itself(divided by 2?? rounded)
+That way instead of numbers MOSTLY being in the higher end, theres a chance you can get lower numbers as well
+ */
 
 {
     class Program
@@ -281,6 +286,9 @@ namespace SMS_Program
         {
             //Method that actually does the running of the mathmatics problems.
 
+            Stopwatch sw = new Stopwatch();
+            
+
             bool tryAgain = true;
 
             Console.WriteLine("Let's go!");
@@ -316,7 +324,7 @@ namespace SMS_Program
                 Console.ReadKey();
             }
 
-
+            sw.Start();
             for (int i = 1; i <= initRoundNumber; i++)
             {
                 Console.WriteLine("Current Round:" + i + "/" + initRoundNumber);
@@ -394,7 +402,7 @@ namespace SMS_Program
 
             }
 
-            string result = "You won, " + winCount + " times and lost " + loseCount + " times! Want to play again?\n\n1) Yes\n2) No - return to main menu\n3) No - Exit Application.";
+            string result = $"Time elapsed: {sw.Elapsed.ToString("mm\\mss\\s")} \n You won, {winCount} times and lost {loseCount} times! Want to play again?\n\n1) Yes\n2) No - return to main menu\n3) No - Exit Application.";
 
             Console.WriteLine(result);
 
