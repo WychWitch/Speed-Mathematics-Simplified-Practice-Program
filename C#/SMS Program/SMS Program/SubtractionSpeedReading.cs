@@ -28,5 +28,11 @@ class SubtractionSpeedReading : SpeedReading
 
         Problem = $"{numA}\n-\n{numB}\n_";
     }
+
+    public override string Desc()
+        => "Just like the addition speed read, for these exercises, if a"+
+        " number > 0 don't bother typing the negative symbol and just type"+
+        " the positive number. This reinforces the number *strike out"+
+        " previous number* method as mentioned in the book";
 }
 

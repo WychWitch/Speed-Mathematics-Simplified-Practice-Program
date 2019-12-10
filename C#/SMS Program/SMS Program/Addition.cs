@@ -40,5 +40,9 @@ class Addition : MathProblem
         }
         Answer = Numbers.Sum();
     }
+
+    public override string Desc() 
+        => "This is nothing more than regular"+
+        " addition! Just remmeber to go right to left :)";
 }
 

@@ -12,32 +12,25 @@ using TheArtOfDev.HtmlRenderer.PdfSharp;
 
 //Eventually include a timer function and display how long it took the player to finish and the current highscore for that limit
 
-//Sections of the book left to include: no-carry multiplication, short-hand division, accuracy (quick check and backup check) shortcuts(?) Aliquots Factors Proportionate Chage, Fractions, Decimals, Percentags, business arithmetic
+//
 
 //---For accuracy problems, i think i'm going to generate and show the answer to a random problem, but the answer has a chance to be wrong (+ or - a random amount, or purposefully recreate common problems and bake them in(forgetting to subtract the component and instead adding it, vice versa)) I'm not sure yet
 
-// TODO IMPORTANT replace checking inputs with int.TryParse() or Int32.TryParse() it is so much better that what you;re doing rn
+/*
+TODO
+Sections of the book left to include: 
+    no-carry multiplication, 
+    short-hand division, 
+    accuracy (quick check and backup check)
+    shortcuts(?) 
+    Aliquots 
+    Factors 
+    Proportionate Change, 
+    Fractions, 
+    Decimals, 
+    Percentags, 
+    business arithmetic
 
-// TODO add Subtraction next (w/o making sure the answer is positive)
-
-/*TODO improve EASY subtraction by giving a chance (50%?) that instead of adding a random number to the answer to make it 
-big enough to be positive, instead set one of the components to be set to a random number from 1 to itself(divided by 2?? rounded)
-That way instead of numbers MOSTLY being in the higher end, theres a chance you can get lower numbers as well
- 
-TODO!!!!!!!!!!!!! 
-WHEN YOU GENERATE EASY SUBTRACTION ALL YOU HAVE TO DO IS GENERATE A RANDOM NUMBER 
-THATS LESS THAN THE BASE NUMBER
-
-inf act make it a for loop like
-
-baseNum = randomnum
-list.add(basenum)
-for i = 0; i < row; i++
-    if baseNum > 1: //checks if basenum is bigger than 1
-        newnum = random(1, basenum)
-        basenum -= newNum
-        list.add(newNum)
-list.Sort()
  */
 
 
@@ -78,11 +71,11 @@ class Program
                         break;
                     case 1:
                         prob = 
-                            new AdditionSpeedReading();
+                            new SubtractionSpeedReading();
                         break;
                     case 2:
                         prob =
-                            new SubtractionSpeedReading();
+                            new AdditionSpeedReading();
                         break;
                     case 3:
                         prob = new Addition();
@@ -101,11 +94,11 @@ class Program
                 break;
             case 2:
                 prob =
-                    new AdditionSpeedReading();
+                    new SubtractionSpeedReading();
                 break;
             case 3:
                 prob =
-                    new SubtractionSpeedReading();
+                    new AdditionSpeedReading();
                 break;
             case 4:
                 prob = new Addition();
@@ -123,12 +116,16 @@ class Program
     }
     static void RunProblems(MathProblem prob)
     {
+
+        Console.Clear();
+        Console.WriteLine(prob.Desc());
+        Console.ReadLine();
         for (int i = 0; i < prob.Rounds; i++)
         {
             Console.Clear();
             prob.Generate();
             Console.WriteLine($"{prob.GetType()} Problems "+
-                $"\nRound {i + 1}/{prob.Rounds} Answer: {prob.Answer}\n***********");
+                $"\nRound {i + 1}/{prob.Rounds}\n***********");
             Console.WriteLine(prob);
             Console.WriteLine(
                 prob.Verify());

@@ -101,4 +101,6 @@ class MathProblem
         return $"You correctly guessed {NumCorrect} out of {Rounds}"+
             " problems! ";
     }
+
+    public virtual string Desc() => "Override This With A Description.";
 }

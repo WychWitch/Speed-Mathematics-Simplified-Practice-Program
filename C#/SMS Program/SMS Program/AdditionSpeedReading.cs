@@ -28,6 +28,11 @@ class AdditionSpeedReading : SpeedReading
         }
 
         Problem = $"{numA}\n-\n{numB}\n_";
+
     }
+
+    public override string Desc()
+       => "For these exercises, if a number >= 10 ignore the tens place and"+
+        " just type the ones place.";
 }
 

@@ -39,7 +39,7 @@ class Subtraction : MathProblem
 
         if (rows >= 1)
         {
-            this.rows = rows -1;
+            this.rows = rows - 1;
         }
         if (length >= 1)
         {
@@ -87,6 +87,21 @@ class Subtraction : MathProblem
                 Numbers.Add(rnum.Next(1, numMax));
             }
             Answer = BaseNum - Numbers.Sum();
+        }
+    }
+
+    public override string Desc()
+    {
+        if (SimpleSubtract)
+        {
+            return "This is easy subtraction! " +
+                "By easy, I mean you don't have to worry about the answer " +
+                "being a negative number, no matter how many rows you have!";
+        }
+        else
+        {
+            return "This is normal subtraction! Many (if not most) answers"+
+                " will be in the negatives!";
         }
     }
 
