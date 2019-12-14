@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Addition.cs" />
     <Compile Include="AdditionSpeedReading.cs" />
+    <Compile Include="MathCreation.cs" />
     <Compile Include="MathProblem.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Program.cs" />

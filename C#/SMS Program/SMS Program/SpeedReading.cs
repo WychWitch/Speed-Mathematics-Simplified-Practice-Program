@@ -34,8 +34,8 @@ class SpeedReading : MathProblem
     }
 
     public override string Desc()
-        => "Remember that you have to write the complement of the HIGHER"+
-        " number and IGNORE the lower one. This is to renforce complement"+
+        => "Remember that you have to write the complement of the \nHIGHER"+
+        " number and IGNORE the lower one. This is to renforce\n complement"+
         " speed-reading.";
 }
 

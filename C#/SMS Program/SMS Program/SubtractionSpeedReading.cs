@@ -30,9 +30,9 @@ class SubtractionSpeedReading : SpeedReading
     }
 
     public override string Desc()
-        => "Just like the addition speed read, for these exercises, if a"+
-        " number > 0 don't bother typing the negative symbol and just type"+
-        " the positive number. This reinforces the number *strike out"+
-        " previous number* method as mentioned in the book";
+        => "Just like the addition speed read, for these exercises, \nif a"+
+        " number > 0 don't bother typing the negative symbol and just \ntype"+
+        " the positive number. This reinforces the \"number *strike out\n"+
+        " previous number*\" method as mentioned in the book";
 }
 

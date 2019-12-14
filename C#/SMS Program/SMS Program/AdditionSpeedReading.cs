@@ -32,7 +32,7 @@ class AdditionSpeedReading : SpeedReading
     }
 
     public override string Desc()
-       => "For these exercises, if a number >= 10 ignore the tens place and"+
+       => "For these exercises, if a number >= 10 ignore the tens place \nand"+
         " just type the ones place.";
 }
 

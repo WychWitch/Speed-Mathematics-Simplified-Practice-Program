@@ -15,6 +15,7 @@ class MathProblem
     protected int rows,
         length,
         numMax;
+    public string symbol = "";
 
     public int NumCorrect { set; get; }
     public double Answer { set; get; }
@@ -32,14 +33,13 @@ class MathProblem
         Console.Write("How Many problems " +
                 "would you like?: ");
         Rounds = intValidator();
-        
     }
 
     public virtual void Generate()
     {
         Problem = "";
     }
-    public virtual string Verify()
+    public virtual string CheckAnswer()
     {
         int answer;
         bool success;

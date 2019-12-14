@@ -10,14 +10,21 @@ using PdfSharp.Pdf;
 using TheArtOfDev.HtmlRenderer.PdfSharp;
 
 
-//Eventually include a timer function and display how long it took the player to finish and the current highscore for that limit
-
+//
 //
 
-//---For accuracy problems, i think i'm going to generate and show the answer to a random problem, but the answer has a chance to be wrong (+ or - a random amount, or purposefully recreate common problems and bake them in(forgetting to subtract the component and instead adding it, vice versa)) I'm not sure yet
-
+//
 /*
 TODO
+Eventually include a timer function and display how long it
+took the player to finish and the current highscore for that limit
+
+---For the accuracy problems, i think i'm going to generate and show the 
+answer to a random problem, but the answer has a chance to be wrong 
+(+ or - a random amount, or purposefully recreate common problems and 
+bake them in(forgetting to subtract the component and instead adding it, vice 
+versa)) I'm not sure yet
+
 Sections of the book left to include: 
     no-carry multiplication, 
     short-hand division, 
@@ -31,6 +38,12 @@ Sections of the book left to include:
     Percentags, 
     business arithmetic
 
+    Ask if user wants random kinds of problems (letting the user select the problems, pass)
+
+    FOr now, just create a list of MathProblem objects and randomly select
+        one each time (this will require adding a symbol to the strings to 
+        denote what kind of problem they are, also the default for subtraction
+        will be False
  */
 
 
@@ -38,85 +51,25 @@ class Program
 {
     static void Main()
     {
+        bool printMode = false;
         MathProblem prob = null;
 
-        Menu starterMenu = new Menu("Please make a selection",
-            new string[] { "Print",
-                "Speed Reading Complements",
-                "Speed Reading Subtractions",
-                "Speed Reading Addition",
-                "Addition",
-                "Subtraction",
-                "Quit"
-            });
-        int selection = starterMenu.Select();
-        switch (selection)
-        {
-            case 0:
-                Menu printerMenu = new Menu("Please select which problems"+
-                    "you would like to print",
-            new string[] {
-                "Speed Reading Complements",
-                "Speed Reading Addition",
-                "Speed Reading Subtraction",
-                "Addition",
-                "Subtraction",
-                "Quit"
-            });
-                int printSelection = printerMenu.Select();
-                switch (printSelection)
-                {
-                    case 0:
-                        prob = new SpeedReading();
-                        break;
-                    case 1:
-                        prob = 
-                            new SubtractionSpeedReading();
-                        break;
-                    case 2:
-                        prob =
-                            new AdditionSpeedReading();
-                        break;
-                    case 3:
-                        prob = new Addition();
-                        break;
-                    case 4:
-                        prob = new Subtraction();
-                        break;
-                    case 5:
-                        Environment.Exit(0);
-                        break;
-                }
-                GeneratePDF(prob);
-                break;
-            case 1:
-                prob = new SpeedReading();
-                break;
-            case 2:
-                prob =
-                    new SubtractionSpeedReading();
-                break;
-            case 3:
-                prob =
-                    new AdditionSpeedReading();
-                break;
-            case 4:
-                prob = new Addition();
-                break;
-            case 5:
-                prob = new Subtraction();
-                break;
-            case 6:
-                Environment.Exit(0);
-                break;
-        }
-        RunProblems(prob);
-        
+        MathCreation mathCreator = new MathCreation();
 
+        prob = mathCreator.Create(ref printMode);
+
+        if (printMode)
+        {
+            GeneratePDF(prob);
+        }
+        else
+        {
+            RunProblems(prob);
+        }
+        
     }
     static void RunProblems(MathProblem prob)
     {
-
         Console.Clear();
         Console.WriteLine(prob.Desc());
         Console.ReadLine();
@@ -128,13 +81,13 @@ class Program
                 $"\nRound {i + 1}/{prob.Rounds}\n***********");
             Console.WriteLine(prob);
             Console.WriteLine(
-                prob.Verify());
+                prob.CheckAnswer());
             Console.ReadLine();
         }
         Console.WriteLine(prob.Stats());
         Menu printMenu = new Menu(
-           "Would you like to go again ?", new string[]
-           {"Yes","No - return to main menu","No - Exit Application"});
+           "Would you like to go again ?", new List<String>
+           {"Yes","No - return to main menu"});
 
         int menuSelect = printMenu.Select();
 
@@ -154,6 +107,8 @@ class Program
     }
     static void GeneratePDF(MathProblem problem)
     {
+        MathCreation mathCreator = new MathCreation();
+
         int bottomPadSize = 100; //100px default
 
 
@@ -185,7 +140,6 @@ class Program
             pdfStringAnswers += "<tr>";
             for (int ii = 1; ii <= 10 && i <= problem.Rounds; ii++)
             {
-
                 problem.Generate();
 
                 //replacing /n with html-friendly <br>
@@ -223,8 +177,8 @@ class Program
         System.Diagnostics.Process.Start("answers.pdf");
 
         Menu printMenu = new Menu("Done generating PDF. " +
-            "Would you like to print this again ?", new string[]
-            {"Yes","No - return to main menu","No - Exit Application"});
+            "Would you like to print this again ?", new List<String>
+            {"Yes","No - return to main menu"});
 
         int menuSelect = printMenu.Select();
 

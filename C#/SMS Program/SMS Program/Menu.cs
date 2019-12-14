@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 class Menu
 {
-    public string[] Options { get; set; }
+    public List<string> Options { get; set; }
     public string Question { get; set; }
 
-    public Menu(string question, string[] options)
+    public Menu(string question, List<string> options)
     {
         Options = options;
         Question = question;
+        Options.Add("Quit");
     }
 
     public int Select()
@@ -43,16 +44,20 @@ class Menu
 
             }
 
-            if (inputInt >= 0 && inputInt < Options.Length)
+            if (inputInt >= 0 && inputInt < Options.Count() - 1)
             {
                 Console.WriteLine("************************");
+            }
+            else if (inputInt == Options.Count() - 1)
+            {
+                Environment.Exit(0);
             }
             else
             {
                 Console.WriteLine("Enter a valid option.");
             }
 
-        } while (inputInt < 0 || inputInt >= Options.Length);
+        } while (inputInt < 0 || inputInt >= Options.Count());
 
         return inputInt;
     }

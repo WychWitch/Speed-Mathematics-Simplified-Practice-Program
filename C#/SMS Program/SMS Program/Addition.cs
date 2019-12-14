@@ -28,6 +28,7 @@ class Addition : MathProblem
         }
         numMax = (int)(Math.Pow(10, length));
         Numbers = new List<int>();
+        symbol = "(+)";
     }
 
     public override void Generate()
@@ -40,9 +41,8 @@ class Addition : MathProblem
         }
         Answer = Numbers.Sum();
     }
-
     public override string Desc() 
         => "This is nothing more than regular"+
-        " addition! Just remmeber to go right to left :)";
+        " addition! \nJust remmeber to go right to left :)";
 }
 

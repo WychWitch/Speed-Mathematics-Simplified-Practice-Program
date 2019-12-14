@@ -47,6 +47,7 @@ class Subtraction : MathProblem
         }
         numMax = (int)(Math.Pow(10, length));
         Numbers = new List<int>();
+        symbol = "(-)";
 
         Console.Write("Would you like the posibility of "+
             "negative answers?(y/n) : ");
@@ -94,8 +95,8 @@ class Subtraction : MathProblem
     {
         if (SimpleSubtract)
         {
-            return "This is easy subtraction! " +
-                "By easy, I mean you don't have to worry about the answer " +
+            return "This is easy subtraction! \n" +
+                "By easy, I mean you don't have to worry about the answer \n" +
                 "being a negative number, no matter how many rows you have!";
         }
         else
