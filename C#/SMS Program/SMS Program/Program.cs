@@ -1,19 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Diagnostics;
-using System.Text;
-using System.Threading.Tasks;
-using Medallion;
 using PdfSharp;
 using PdfSharp.Pdf;
 using TheArtOfDev.HtmlRenderer.PdfSharp;
 
-
-//
-//
-
-//
 /*
 TODO
 Eventually include a timer function and display how long it
@@ -40,7 +30,7 @@ Sections of the book left to include:
 
     Ask if user wants random kinds of problems (letting the user select the problems, pass)
 
-    FOr now, just create a list of MathProblem objects and randomly select
+    For now, just create a list of MathProblem objects and randomly select
         one each time (this will require adding a symbol to the strings to 
         denote what kind of problem they are, also the default for subtraction
         will be False
@@ -68,7 +58,9 @@ class Program
         }
         
     }
-    static void RunProblems(MathProblem prob)
+
+    //Run math problems in console.
+    static void RunProblems(MathProblem prob) 
     {
         Console.Clear();
         Console.WriteLine(prob.Desc());
@@ -76,12 +68,12 @@ class Program
         for (int i = 0; i < prob.Rounds; i++)
         {
             Console.Clear();
-            prob.Generate();
+            prob.Generate(); //Generates a new problem
             Console.WriteLine($"{prob.GetType()} Problems "+
                 $"\nRound {i + 1}/{prob.Rounds}\n***********");
             Console.WriteLine(prob);
             Console.WriteLine(
-                prob.CheckAnswer());
+                prob.CheckAnswer());//checks answer given
             Console.ReadLine();
         }
         Console.WriteLine(prob.Stats());
@@ -91,19 +83,18 @@ class Program
 
         int menuSelect = printMenu.Select();
 
-        if (menuSelect == 0)
+        switch(menuSelect)
         {
-            RunProblems(prob);
+            case 0:
+                RunProblems(prob);
+                break;
+            case 1:
+                Main();
+                break;
+            default:
+                Environment.Exit(0);
+                    break;
         }
-        else if (menuSelect == 1)
-        {
-            Main();
-        }
-        else if (menuSelect == 2)
-        {
-            Environment.Exit(0);
-        }
-
     }
     static void GeneratePDF(MathProblem problem)
     {
@@ -182,17 +173,17 @@ class Program
 
         int menuSelect = printMenu.Select();
 
-        if (menuSelect == 0)
+        switch (menuSelect)
         {
-            GeneratePDF(problem);
-        }
-        else if (menuSelect == 1)
-        {
-            Main();
-        }
-        else if (menuSelect == 2)
-        {
-            Environment.Exit(0);
+            case 0:
+                GeneratePDF(problem);
+                break;
+            case 1:
+                Main();
+                break;
+            default:
+                Environment.Exit(0);
+                break;
         }
 
     }

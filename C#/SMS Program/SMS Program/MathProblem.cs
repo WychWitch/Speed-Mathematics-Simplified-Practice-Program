@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
 
 
 class MathProblem
@@ -41,17 +37,7 @@ class MathProblem
     }
     public virtual string CheckAnswer()
     {
-        int answer;
-        bool success;
-
-        do
-        {
-            success = int.TryParse(Console.ReadLine(), out answer);
-            if (success != true)
-            {
-                Console.WriteLine("Input valid int.");
-            }
-        } while (success != true);
+        int answer = intValidator();
 
         if (answer == Answer)
         {
@@ -66,17 +52,17 @@ class MathProblem
     protected int intValidator()
     {
         int num;
-        bool success;
+        bool validInt;
         do
         {
-            success = int.TryParse(
+            validInt = int.TryParse(
                 Console.ReadLine(),
                 out num);
-            if (success != true)
+            if (validInt != true)
             {
-                Console.WriteLine("Input Valid Integer.");
+                Console.WriteLine("Please Input Valid Integer.");
             }
-        } while (success != true);
+        } while (validInt != true);
         return num;
     }
 
@@ -98,8 +84,10 @@ class MathProblem
 
     public string Stats()
     {
-        return $"You correctly guessed {NumCorrect} out of {Rounds}"+
+        string statString = $"You correctly guessed {NumCorrect} out of {Rounds}" +
             " problems! ";
+        NumCorrect = 0;
+        return statString;
     }
 
     public virtual string Desc() => "Override This With A Description.";

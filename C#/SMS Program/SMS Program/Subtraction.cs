@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 class Subtraction : MathProblem
@@ -84,7 +82,6 @@ class Subtraction : MathProblem
         {
             for (int i = 0; i < rows; i++)
             {
-
                 Numbers.Add(rnum.Next(1, numMax));
             }
             Answer = BaseNum - Numbers.Sum();

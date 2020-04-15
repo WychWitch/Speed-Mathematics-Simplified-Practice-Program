@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+/*Creates a menu for creating mathProblem objects and returns it.
+ */
 
 enum MathProblems
 {
     COMP_READING = 1,
-    COMP_ADD,
     COMP_SUB,
+    COMP_ADD,
     ADDITION,
     SUBTRACTION
 }
@@ -25,7 +25,6 @@ class MathCreation
                 "Addition",
                 "Subtraction"
              });
-
 
         MathProblem prob = null;
 
