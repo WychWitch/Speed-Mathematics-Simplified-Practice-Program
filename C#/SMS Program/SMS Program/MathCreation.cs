@@ -16,7 +16,10 @@ class MathCreation
 {
     public MathProblem Create(ref bool printMode)
     {
-        Menu starterMenu = new Menu("Please make a selection",
+        string printModeText = printMode ? "On" : "Off";
+
+        Menu starterMenu = new Menu($"Print mode is {printModeText}",
+            "Please make a selection",
              new List<string> {
                 "Toggle Print Mode",
                 "Speed Reading Complements",
@@ -38,9 +41,9 @@ class MathCreation
                 Console.Clear();
                 printMode = !printMode;
 
-                string printModeText = printMode ? "On" : "Off";
+                printModeText = printMode ? "On!" : "Off!";
 
-                Console.WriteLine($"Print mode is {printModeText}");
+                starterMenu.Prefix = $"Print mode is {printModeText}";
             }
             else
             {

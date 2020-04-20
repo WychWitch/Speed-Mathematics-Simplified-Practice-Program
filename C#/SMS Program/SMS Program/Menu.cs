@@ -10,8 +10,18 @@ class Menu
     public List<string> Options { get; set; }
     public string Question { get; set; }
 
+    public string Prefix { get; set; }
+
     public Menu(string question, List<string> options)
     {
+        Options = options;
+        Question = question;
+        Options.Add("Quit");
+    }
+
+    public Menu(string prefix, string question, List<string> options)
+    {
+        Prefix = prefix;
         Options = options;
         Question = question;
         Options.Add("Quit");
@@ -20,6 +30,12 @@ class Menu
     public int Select()
     {
         int count = 0;
+        if (Prefix != null)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write($"{Prefix}\n");
+            Console.ResetColor();
+        }
         foreach (string option in Options)
         {
             Console.Write($"{count}) {option} \n");
