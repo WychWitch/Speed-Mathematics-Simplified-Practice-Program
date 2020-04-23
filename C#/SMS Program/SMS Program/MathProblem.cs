@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Web.Caching;
 
 class MathProblem
 {
@@ -16,15 +16,20 @@ class MathProblem
     public double Answer { set; get; }
     public string Problem { set; get; }
     public List<int> Numbers { get; set; }
+    public int BufferSize { get; set; }
     public int Rounds { get; set; }
     protected Random rnum = new Random();
+    protected bool sort = false;
 
     public MathProblem()
     {
+        BufferSize = 40; //100px default
         rnum = new Random();
         Console.Write("How Many problems " +
                 "would you like?: ");
         Rounds = intValidator();
+
+        
     }
 
     public virtual void Generate()
@@ -65,14 +70,18 @@ class MathProblem
 
     public override string ToString()
     {
-        Numbers.Sort();
-        Numbers.Reverse();
+        if (sort)
+        {
+            Numbers.Sort();
+            Numbers.Reverse();
+        }
+
         foreach (int number in Numbers)
         {
             Problem += $"{number,3}\n";
         }
 
-        string spacing = new string('_', (length));
+        string spacing = new string('_', length);
 
         Problem += spacing;
 
@@ -85,6 +94,11 @@ class MathProblem
             " problems! ";
         NumCorrect = 0;
         return statString;
+    }
+
+    public virtual string PDFstring()
+    {
+        return ToString();
     }
 
     public virtual string Desc() => "Override This With A Description.";

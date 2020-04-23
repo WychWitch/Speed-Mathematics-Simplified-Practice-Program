@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SMS_Program;
+using System;
 using System.Collections.Generic;
 
 /*Creates a menu for creating mathProblem objects and returns it.
@@ -6,67 +7,151 @@ using System.Collections.Generic;
 
 enum MathProblems
 {
+    ADDITION = 1,
+    SUBTRACTION,
+    MULTIPLICATION,
+    DIVISION
+}
+
+enum SMSProblems
+{
     COMP_READING = 1,
     COMP_SUB,
-    COMP_ADD,
-    ADDITION,
-    SUBTRACTION
+    COMP_ADD
 }
+
 class MathCreation
 {
-    public MathProblem Create(ref bool pdfMode)
+    public bool PdfMode { get; set; }
+    string pdfModeText = "";
+    public MathProblem Create()
     {
-        string pdfModeText = pdfMode ? "On" : "Off";
+        pdfModeText = PdfMode ? "On" : "Off";
         MathProblem prob = null;
         int choice;
+        int smsChoice;
+        int mathChoice;
+        bool choseProblem = false;
 
         Menu starterMenu = new Menu($"PDF mode is {pdfModeText}",
             "Please make a selection",
              new List<string> {
                 "Toggle PDF Mode",
-                "Speed Reading Complements",
-                "Speed Reading Subtractions",
-                "Speed Reading Addition",
-                "Addition",
-                "Subtraction"
+                "Speed Mathmatics Simplified Problems",
+                "Normal Math Problems"
              });
         do
         {
             choice = starterMenu.Select();
 
-            if (choice == 0)
+            switch (choice)
             {
-                Console.Clear();
-                pdfMode = !pdfMode;
+                case 0:
+                    Console.Clear();
+                    PdfMode = !PdfMode;
 
-                pdfModeText = pdfMode ? "On!" : "Off!";
+                    pdfModeText = PdfMode ? "On!" : "Off!";
 
-                starterMenu.Prefix = $"PDF mode is {pdfModeText}";
+                    starterMenu.Prefix = $"PDF mode is {pdfModeText}";
+                    break;
+                case 1:
+                    Menu smsMenu = new Menu($"PDF mode is {pdfModeText}",
+                    "Please make a selection",
+                    new List<string>
+                    {
+                        "Toggle PDF Mode",
+                        "Component Speed-reading",
+                        "Component Addition",
+                        "Component Subtraction",
+                        "Return To Previous Menu"
+                    });
+
+                    do
+                    {
+                        smsChoice = smsMenu.Select();
+                        switch (smsChoice)
+                        {
+                            case 0:
+                                Console.Clear();
+                                PdfMode = !PdfMode;
+
+                                pdfModeText = PdfMode ? "On!" : "Off!";
+                                smsMenu.Prefix = $"PDF mode is {pdfModeText}";
+                                break;
+                            case 4:
+                                break;
+                            default:
+                                choseProblem = true;
+                                return SMSProblem(smsChoice);
+                        }
+                    } while (smsChoice == 0);
+                    break;
+                default:
+                    Menu mathMenu = new Menu($"PDF mode is {pdfModeText}",
+                    "Please make a selection",
+                    new List<string>
+                    {
+                        "Toggle PDF Mode",
+                        "Addition",
+                        "Subtraction",
+                        "Multiplication",
+                        "Division",
+                        "Return To Previous Menu"
+                    });
+                    do
+                    {
+                        mathChoice = mathMenu.Select();
+                        switch (mathChoice)
+                        {
+                            case 0:
+                                Console.Clear();
+                                PdfMode = !PdfMode;
+
+                                pdfModeText = PdfMode ? "On!" : "Off!";
+                                mathMenu.Prefix = $"PDF mode is {pdfModeText}";
+                                break;
+                            case 5:
+                                break;
+                            default:
+                                choseProblem = true;
+                                return MathProblem(mathChoice);
+                        }
+                    } while (mathChoice == 0);
+                    break;
             }
-            else
-            {
-                prob = SelectMathProblem(choice);
-            }
-
-        } while(choice == 0);
+        } while(choice == 0 || !choseProblem);
 
         return prob;
         
     }
-    public MathProblem SelectMathProblem(int choice)
+
+    private MathProblem SMSProblem(int choice)
     {
         switch (choice)
         {
-            case (int)MathProblems.COMP_READING:
+            case (int)SMSProblems.COMP_READING:
                 return new SpeedReading();
-            case (int)MathProblems.COMP_ADD:
+            case (int)SMSProblems.COMP_ADD:
                 return new AdditionSpeedReading();
-            case (int)MathProblems.COMP_SUB:
+            default:
                 return new SubtractionSpeedReading();
+        }
+    }
+
+    public MathProblem MathProblem(int choice)
+    {
+        switch (choice)
+        {
             case (int)MathProblems.ADDITION:
                 return new Addition();
-            default:
+            case (int)MathProblems.SUBTRACTION:
                 return new Subtraction();
+            case (int)MathProblems.MULTIPLICATION:
+                return new Multiplication();
+            case (int)MathProblems.DIVISION:
+                return new Division();
+            default:
+                return new Division();
         }
     }
 }

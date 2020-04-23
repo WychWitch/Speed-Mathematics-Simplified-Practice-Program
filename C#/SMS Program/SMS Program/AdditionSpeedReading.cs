@@ -13,7 +13,6 @@ class AdditionSpeedReading : SpeedReading
 
     public override void Generate()
     {
-        rnum = new Random();
         int numA = rnum.Next(1,10);
         int numB = rnum.Next(1,10);
         int answer = numA + numB;

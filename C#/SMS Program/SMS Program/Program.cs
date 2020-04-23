@@ -41,16 +41,15 @@ class Program
 {
     static void Main()
     {
-        bool printMode = false;
         MathProblem prob = null;
 
         //creates a new math creator class
         MathCreation mathCreator = new MathCreation();
 
         //creates a new mathProblem object
-        prob = mathCreator.Create(ref printMode);
+        prob = mathCreator.Create();
 
-        if (printMode)
+        if (mathCreator.PdfMode)
         {
             GeneratePDF(prob);
         }
@@ -194,7 +193,6 @@ class Program
         ranName += $"<b>{adjectives[ranChoice.Next(adjectives.Count)]}";
         ranName += $" {animals[ranChoice.Next(animals.Count)]}</b></div>";
 
-        int bottomPadSize = 40; //100px default
         int answerBottomPadSize = 10; //100px default
 
 
@@ -230,11 +228,11 @@ class Program
 
                 //replacing /n with html-friendly <br>
                 pdfString += "<th style=\"float: left;width: 30 %;padding:"+
-                    " 1px 1px " + bottomPadSize.ToString() + "px"+
+                    " 1px 1px " + problem.BufferSize.ToString() + "px"+
                     " 1px; text-align: right; font-weight: normal \">"+
                     " <div style=\"color:#b04cdb; font-size: 12px;"+
                     " font-style: italic\">" + i + ".</div>" + 
-                    $"{problem}".Replace("\n", "<br>") + "</th>"; 
+                    $"{problem.PDFstring()}".Replace("\n", "<br>") + "</th>"; 
 
                 pdfStringAnswers += "<th style=\"float: left;width: 30"+
                     $" %;padding: 1px 1px {answerBottomPadSize}px"+

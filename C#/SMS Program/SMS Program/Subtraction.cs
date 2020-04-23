@@ -33,6 +33,26 @@ class Subtraction : MathProblem
         Console.Write("What's the max digit length " +
                 "would you like?: ");
         int length = intValidator();
+        Console.Write("Would you like the numbers " +
+                "to be sorted? y/n\n: ");
+        string response = "";
+        do
+        {
+            response = Console.ReadLine();
+            if (response.ToUpper() == "Y")
+            {
+                sort = true;
+            }
+            else if (response.ToUpper() == "N")
+            {
+                sort = false;
+            }
+            else
+            {
+                Console.WriteLine("Please enter a valid option.\n: ");
+            }
+        } while (response.ToUpper() != "Y" &&
+        response.ToUpper() != "N");
 
 
         if (rows >= 1)
