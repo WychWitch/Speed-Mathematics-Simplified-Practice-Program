@@ -14,24 +14,22 @@ enum MathProblems
 }
 class MathCreation
 {
-    public MathProblem Create(ref bool printMode)
+    public MathProblem Create(ref bool pdfMode)
     {
-        string printModeText = printMode ? "On" : "Off";
+        string pdfModeText = pdfMode ? "On" : "Off";
+        MathProblem prob = null;
+        int choice;
 
-        Menu starterMenu = new Menu($"Print mode is {printModeText}",
+        Menu starterMenu = new Menu($"PDF mode is {pdfModeText}",
             "Please make a selection",
              new List<string> {
-                "Toggle Print Mode",
+                "Toggle PDF Mode",
                 "Speed Reading Complements",
                 "Speed Reading Subtractions",
                 "Speed Reading Addition",
                 "Addition",
                 "Subtraction"
              });
-
-        MathProblem prob = null;
-
-        int choice;
         do
         {
             choice = starterMenu.Select();
@@ -39,11 +37,11 @@ class MathCreation
             if (choice == 0)
             {
                 Console.Clear();
-                printMode = !printMode;
+                pdfMode = !pdfMode;
 
-                printModeText = printMode ? "On!" : "Off!";
+                pdfModeText = pdfMode ? "On!" : "Off!";
 
-                starterMenu.Prefix = $"Print mode is {printModeText}";
+                starterMenu.Prefix = $"PDF mode is {pdfModeText}";
             }
             else
             {

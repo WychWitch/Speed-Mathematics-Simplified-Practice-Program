@@ -12,15 +12,11 @@ class MathProblem
         length,
         numMax;
     public string symbol = "";
-
     public int NumCorrect { set; get; }
     public double Answer { set; get; }
     public string Problem { set; get; }
     public List<int> Numbers { get; set; }
-
     public int Rounds { get; set; }
-
-
     protected Random rnum = new Random();
 
     public MathProblem()
@@ -55,6 +51,7 @@ class MathProblem
         bool validInt;
         do
         {
+            //makes sure int is valid. If not, loop
             validInt = int.TryParse(
                 Console.ReadLine(),
                 out num);

@@ -69,23 +69,47 @@ class Subtraction : MathProblem
         BaseNum = rnum.Next(1, numMax);
         if (SimpleSubtract)
         {
-            for (int i = 0; i < rows; i++)
-            {
-                if (BaseNum > Numbers.Sum())
-                {
-                    Numbers.Add(rnum.Next(1, (BaseNum - Numbers.Sum())));
-                }
-            }
-            Answer = BaseNum - Numbers.Sum();
+            positiveProbGen();
         }
         else
         {
-            for (int i = 0; i < rows; i++)
+            //this is to ensure a 50% chance at getting a positive 
+            //number each time a problem is generated
+            int choice = rnum.Next(1,10);
+            
+            //This is an if/else statement cos switch statements end up
+            //All resolving to either positive or negative for some reason
+            if (choice >=5)
+            {
+                positiveProbGen();
+            }
+            else
+            {
+                negativeProbGen();
+            }
+            
+        }
+    }
+
+    private void positiveProbGen() 
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            if (BaseNum > Numbers.Sum())
+            {
+                Numbers.Add(rnum.Next(1, (BaseNum - Numbers.Sum())));
+            }
+        }
+        Answer = BaseNum - Numbers.Sum();
+    }
+
+    private void negativeProbGen()
+    {
+        for (int i = 0; i<rows; i++)
             {
                 Numbers.Add(rnum.Next(1, numMax));
             }
-            Answer = BaseNum - Numbers.Sum();
-        }
+        Answer = BaseNum - Numbers.Sum();
     }
 
     public override string Desc()
@@ -108,6 +132,5 @@ class Subtraction : MathProblem
         string spacing = new string('-', (length));
         return $"{BaseNum,3}\n{spacing}\n{base.ToString()}";
     }
-
 }
 

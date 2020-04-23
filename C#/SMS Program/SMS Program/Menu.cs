@@ -9,7 +9,6 @@ class Menu
 {
     public List<string> Options { get; set; }
     public string Question { get; set; }
-
     public string Prefix { get; set; }
 
     public Menu(string question, List<string> options)

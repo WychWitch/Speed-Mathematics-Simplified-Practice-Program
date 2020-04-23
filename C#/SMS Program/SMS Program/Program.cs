@@ -44,8 +44,10 @@ class Program
         bool printMode = false;
         MathProblem prob = null;
 
+        //creates a new math creator class
         MathCreation mathCreator = new MathCreation();
 
+        //creates a new mathProblem object
         prob = mathCreator.Create(ref printMode);
 
         if (printMode)
@@ -77,6 +79,8 @@ class Program
             Console.ReadLine();
         }
         Console.WriteLine(prob.Stats());
+
+        //Create and display new menu
         Menu printMenu = new Menu(
            "Would you like to go again ?", new List<String>
            {"Yes","No - return to main menu"});
@@ -96,11 +100,102 @@ class Program
                     break;
         }
     }
+
+    //Creates a PDF 
     static void GeneratePDF(MathProblem problem)
     {
-        MathCreation mathCreator = new MathCreation();
+        List<string> colors = new List<string>{
+            "#2E8B57",
+            "#8FBC8F",
+            "#D2691E",
+            "#BC8F8F",
+            "#00BFFF",
+            "#00CED1",
+            "#B22222",
+            "#DA70D6",
+            "#7B68EE",
+            "#000000",
+            "#F08080",
+            "#8A2BE2",
+            "#800080",
+            "#4169E1",
+            "#DC143C",
+            "#4682B4",
+            "#808080",
+            "#DC143C",
+            "#FF7F50",
+            "#696969",
+            "#BA55D3",
+            "#2F4F4F",
+            "#40E0D0",
+            "#A52A2A",
+            "#DDA0DD"
+        };
 
-        int bottomPadSize = 100; //100px default
+        List<string> adjectives = new List<string> {
+            "permissible",
+            "vengeful",
+            "careful",
+            "profuse",
+            "beautiful",
+            "determined",
+            "offbeat",
+            "protective",
+            "massive",
+            "enchanted",
+            "quaint",
+            "secretive",
+            "solid",
+            "liquid",
+            "shining",
+            "defeated",
+            "astonishing",
+            "true",
+            "final",
+            "glorious",
+            "malicious",
+            "puzzling",
+            "knowledgeable",
+            "quiet",
+            "silent"
+        };
+
+        List<string> animals = new List<string>
+        {
+            "salamander",
+            "horse",
+            "porcupine",
+            "hog",
+            "deer",
+            "prairie dog",
+            "orangutan",
+            "yak",
+            "antelope",
+            "crocodile",
+            "giraffe",
+            "lizard",
+            "ram",
+            "rabbit",
+            "toad",
+            "octopus",
+            "jerboa",
+            "mole",
+            "panther",
+            "snake",
+            "chameleon",
+            "bat",
+            "ocelot",
+            "crab",
+            "hyena",
+            "horse"
+        };
+        Random ranChoice = new Random();
+        string ranName = $"<div style =\"color:{colors[ranChoice.Next(colors.Count)]}\">";
+        ranName += $"<b>{adjectives[ranChoice.Next(adjectives.Count)]}";
+        ranName += $" {animals[ranChoice.Next(animals.Count)]}</b></div>";
+
+        int bottomPadSize = 40; //100px default
+        int answerBottomPadSize = 10; //100px default
 
 
         Console.WriteLine("Generating PDF, it might take some time...");
@@ -114,7 +209,7 @@ class Program
         string header = "<body><h1 style=\"font-size: " +
             "40px;text-align: right;> " + modeText +
             " PROBLEMS</h1><br><p style=\"font-size: 10px;text-align: " +
-            "right;>" + formattedTime + "</p>";
+            "right;>" + ranName +" "+ formattedTime + "</p>";
         
         
         string pdfString = header;
@@ -142,7 +237,7 @@ class Program
                     $"{problem}".Replace("\n", "<br>") + "</th>"; 
 
                 pdfStringAnswers += "<th style=\"float: left;width: 30"+
-                    " %;padding: 1px 1px " + bottomPadSize.ToString() + "px"+
+                    $" %;padding: 1px 1px {answerBottomPadSize}px"+
                     " 1px; text-align: right; font-weight: normal \">"+
                     " <div style=\"color:#ff007b; font-size: 12px;"+
                     " font-style: italic\">" + i + ".</div>" +
@@ -159,34 +254,45 @@ class Program
         pdfStringAnswers += "</table></body>";
 
         PdfDocument pdf = PdfGenerator.GeneratePdf(pdfString, PageSize.Letter);
-        pdf.Save("Generated Problems.pdf");
 
-        pdf = PdfGenerator.GeneratePdf(pdfStringAnswers, PageSize.Letter);
-        pdf.Save("answers.pdf");
-
-        System.Diagnostics.Process.Start("Generated Problems.pdf");
-        System.Diagnostics.Process.Start("answers.pdf");
-
-        Menu printMenu = new Menu("Done generating PDF. " +
-            "Would you like to print this again ?", new List<String>
-            {"Yes","No - return to main menu"});
-
-        int menuSelect = printMenu.Select();
-
-        switch (menuSelect)
+        try
         {
-            case 0:
-                GeneratePDF(problem);
-                break;
-            case 1:
-                Main();
-                break;
-            default:
-                Environment.Exit(0);
-                break;
+            pdf.Save("Generated Problems.pdf");
+
+            pdf = PdfGenerator.GeneratePdf(pdfStringAnswers, PageSize.Letter);
+            pdf.Save("answers.pdf");
+            System.Diagnostics.Process.Start("Generated Problems.pdf");
+            System.Diagnostics.Process.Start("answers.pdf");
+        } 
+        catch (System.IO.IOException exc)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($" Error: Could not generate PDF. {exc.Message}");
+            Console.ResetColor();
+            Console.Write("Hit enter to continue: ");
+            Console.ReadLine();
         }
+        finally
+        {
+            Menu printMenu = new Menu("Finished. " +
+    "Would you like to make a pdf of this again ?", new List<String>
+    {"Yes","No - return to main menu"});
 
+            int menuSelect = printMenu.Select();
+
+            switch (menuSelect)
+            {
+                case 0:
+                    GeneratePDF(problem);
+                    break;
+                case 1:
+                    Main();
+                    break;
+                default:
+                    Environment.Exit(0);
+                    break;
+            }
+        }
     }
-
 }
 
