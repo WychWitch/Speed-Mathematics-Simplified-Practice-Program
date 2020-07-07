@@ -1,5 +1,4 @@
-﻿using SMS_Program;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 /*Creates a menu for creating mathProblem objects and returns it.

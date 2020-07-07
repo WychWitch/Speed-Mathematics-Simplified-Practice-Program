@@ -164,7 +164,7 @@ class Program
             "salamander",
             "horse",
             "porcupine",
-            "hog",
+            "boar",
             "deer",
             "prairie dog",
             "orangutan",
