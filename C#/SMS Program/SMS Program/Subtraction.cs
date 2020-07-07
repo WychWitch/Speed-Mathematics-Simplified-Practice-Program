@@ -67,7 +67,7 @@ class Subtraction : MathProblem
         Numbers = new List<int>();
         symbol = "(-)";
 
-        Console.Write("Would you like the posibility of "+
+        Console.Write("Would you like the 50% chance of "+
             "negative answers?(y/n) : ");
         string userInput = Console.ReadLine();
         if (userInput.ToUpper() == "Y")
@@ -89,46 +89,46 @@ class Subtraction : MathProblem
         BaseNum = rnum.Next(1, numMax);
         if (SimpleSubtract)
         {
-            positiveProbGen();
+            probGen(true);
         }
         else
         {
             //this is to ensure a 50% chance at getting a positive 
-            //number each time a problem is generated
+            //number each time a problem is generated, 
+            //otherwise it would be overwhelmingly slanted to negative numbers
             int choice = rnum.Next(1,10);
             
             //This is an if/else statement cos switch statements end up
             //All resolving to either positive or negative for some reason
             if (choice >=5)
             {
-                positiveProbGen();
+                probGen(true);
             }
             else
             {
-                negativeProbGen();
+                probGen(false);
             }
             
         }
     }
 
-    private void positiveProbGen() 
+    private void probGen(bool positive) 
     {
         for (int i = 0; i < rows; i++)
         {
-            if (BaseNum > Numbers.Sum())
+            if (positive)
             {
-                Numbers.Add(rnum.Next(1, (BaseNum - Numbers.Sum())));
+                if (BaseNum > Numbers.Sum())
+                {
+                    Numbers.Add(rnum.Next(1, (BaseNum - Numbers.Sum())));
+                }
             }
-        }
-        Answer = BaseNum - Numbers.Sum();
-    }
-
-    private void negativeProbGen()
-    {
-        for (int i = 0; i<rows; i++)
+            else
             {
                 Numbers.Add(rnum.Next(1, numMax));
             }
+            
+        }
         Answer = BaseNum - Numbers.Sum();
     }
 
