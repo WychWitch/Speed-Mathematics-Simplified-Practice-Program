@@ -5,38 +5,46 @@ using System.Linq;
 
 class Addition : MathProblem
 {
+
+    public Addition(bool auto) : base(true) { Auto = true; }
     public Addition() 
         :base()
     {
-        Console.Write("How Many rows of numbers" +
-                "would you like?: ");
-        int rows = intValidator();
-        Console.Write("What's the max digit length " +
-                "would you like?: ");
-        int length = intValidator();
-
-        Console.Write("Would you like the numbers " +
-                "to be sorted? y/n\n: ");
-        string response = "";
-        do
+        if (!Auto)
         {
-            response = Console.ReadLine();
-            if (response.ToUpper() == "Y")
-            {
-                sort = true;
-            }
-            else if (response.ToUpper() == "N")
-            {
-                sort = false;
-            }
-            else
-            {
-                Console.WriteLine("Please enter a valid option.\n: ");
-            }
-        } while (response.ToUpper() != "Y" &&
-        response.ToUpper() != "N");
+            Console.Write("How Many rows of numbers" +
+                "would you like?: ");
+            int rows = intValidator();
+            Console.Write("What's the max digit length " +
+                    "would you like?: ");
+            int length = intValidator();
 
+            Console.Write("Would you like the numbers " +
+                    "to be sorted? y/n\n: ");
+            string response = "";
+            do
+            {
+                response = Console.ReadLine();
+                if (response.ToUpper() == "Y")
+                {
+                    sort = true;
+                }
+                else if (response.ToUpper() == "N")
+                {
+                    sort = false;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a valid option.\n: ");
+                }
+            } while (response.ToUpper() != "Y" &&
+            response.ToUpper() != "N");
+            MathSetup(rows, length);
+        }
 
+    }
+    public override void MathSetup(int rows, int length)
+    {
         if (rows >= 1)
         {
             this.rows = rows;

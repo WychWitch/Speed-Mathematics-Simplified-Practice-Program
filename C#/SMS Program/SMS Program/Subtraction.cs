@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Windows.Forms;
 
 class Subtraction : MathProblem
 {
@@ -23,38 +23,55 @@ class Subtraction : MathProblem
         }
         
     }
-
+    public Subtraction(bool auto) :base(true) { Auto = true; }
     public Subtraction()
         :base()
     {
-        Console.Write("How Many rows " +
-                "would you like?: ");
-        int rows = intValidator();
-        Console.Write("What's the max digit length " +
-                "would you like?: ");
-        int length = intValidator();
-        Console.Write("Would you like the numbers " +
-                "to be sorted? y/n\n: ");
-        string response = "";
-        do
+        if (!Auto)
         {
-            response = Console.ReadLine();
-            if (response.ToUpper() == "Y")
+            Console.Write("How Many rows " +
+                    "would you like?: ");
+            int rows = intValidator();
+            Console.Write("What's the max digit length " +
+                    "would you like?: ");
+            int length = intValidator();
+            Console.Write("Would you like the numbers " +
+                    "to be sorted? y/n\n: ");
+            string response = "";
+            do
             {
-                sort = true;
-            }
-            else if (response.ToUpper() == "N")
+                response = Console.ReadLine();
+                if (response.ToUpper() == "Y")
+                {
+                    sort = true;
+                }
+                else if (response.ToUpper() == "N")
+                {
+                    sort = false;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a valid option.\n: ");
+                }
+            } while (response.ToUpper() != "Y" &&
+            response.ToUpper() != "N");
+            Console.Write("Would you like the 50% chance of " +
+            "negative answers?(y/n) : ");
+            string userInput = Console.ReadLine();
+            if (userInput.ToUpper() == "Y")
             {
-                sort = false;
+                SimpleSubtract = false;
             }
             else
             {
-                Console.WriteLine("Please enter a valid option.\n: ");
+                SimpleSubtract = true;
             }
-        } while (response.ToUpper() != "Y" &&
-        response.ToUpper() != "N");
+            MathSetup(rows, length);
+        }
+    }
 
-
+    public override void MathSetup(int rows, int length)
+    {
         if (rows >= 1)
         {
             this.rows = rows - 1;
@@ -67,17 +84,6 @@ class Subtraction : MathProblem
         Numbers = new List<int>();
         symbol = "(-)";
 
-        Console.Write("Would you like the 50% chance of "+
-            "negative answers?(y/n) : ");
-        string userInput = Console.ReadLine();
-        if (userInput.ToUpper() == "Y")
-        {
-            SimpleSubtract = false;
-        }
-        else
-        {
-            SimpleSubtract = true;
-        }
         
     }
 

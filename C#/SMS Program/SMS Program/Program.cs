@@ -51,7 +51,15 @@ class Program
 
         if (mathCreator.PdfMode)
         {
-            GeneratePDF(prob);
+            if (prob.GetType().ToString() == "RandomMath")
+            {
+                GeneratePDF(prob, true);
+            }
+            else
+            {
+                GeneratePDF(prob);
+            }
+            
         }
         else
         {
@@ -101,7 +109,7 @@ class Program
     }
 
     //Creates a PDF 
-    static void GeneratePDF(MathProblem problem)
+    static void GeneratePDF(MathProblem problem, bool labelProblems = false)
     {
         List<string> colors = new List<string>{
             "#2E8B57",
@@ -220,18 +228,26 @@ class Program
 
         for (int i = 1; i <= problem.Rounds;)
         {
+           
             pdfString += "<tr>";
             pdfStringAnswers += "<tr>";
             for (int ii = 1; ii <= 10 && i <= problem.Rounds; ii++)
             {
                 problem.Generate();
+                if (labelProblems)
+                {
+                    modeText = problem.currentType;
+                }
+                string probType = "</div><div style =\"color:#000000; font-size: 12px; font-style: italic\">";
+                //prints the problem's type if true, else dont print anything
+                probType += labelProblems ? $"{modeText.ToLower()}<br>" : "</div>";
 
                 //replacing /n with html-friendly <br>
                 pdfString += "<th style=\"float: left;width: 30 %;padding:"+
                     " 1px 1px " + problem.BufferSize.ToString() + "px"+
                     " 1px; text-align: right; font-weight: normal \">"+
                     " <div style=\"color:#b04cdb; font-size: 12px;"+
-                    " font-style: italic\">" + i + ".</div>" + 
+                    " font-style: italic\">" + i + $"{probType}" + 
                     $"{problem.PDFstring()}".Replace("\n", "<br>") + "</th>"; 
 
                 pdfStringAnswers += "<th style=\"float: left;width: 30"+
@@ -244,8 +260,6 @@ class Program
             }
             pdfString += "</tr>";
             pdfStringAnswers += "</tr>";
-
-
 
         }
         pdfString += "</table></body>";
@@ -292,5 +306,7 @@ class Program
             }
         }
     }
+
+
 }
 

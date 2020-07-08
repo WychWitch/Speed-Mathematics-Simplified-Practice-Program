@@ -9,7 +9,8 @@ enum MathProblems
     ADDITION = 1,
     SUBTRACTION,
     MULTIPLICATION,
-    DIVISION
+    DIVISION,
+    RANDOM
 }
 
 enum SMSProblems
@@ -95,6 +96,7 @@ class MathCreation
                         "Subtraction",
                         "Multiplication",
                         "Division",
+                        "Random",
                         "Return To Previous Menu"
                     });
                     do
@@ -109,7 +111,7 @@ class MathCreation
                                 pdfModeText = PdfMode ? "On!" : "Off!";
                                 mathMenu.Prefix = $"PDF mode is {pdfModeText}";
                                 break;
-                            case 5:
+                            case 6:
                                 break;
                             default:
                                 choseProblem = true;
@@ -149,6 +151,8 @@ class MathCreation
                 return new Multiplication();
             case (int)MathProblems.DIVISION:
                 return new Division();
+            case (int)MathProblems.RANDOM:
+                return new RandomMath();
             default:
                 return new Division();
         }

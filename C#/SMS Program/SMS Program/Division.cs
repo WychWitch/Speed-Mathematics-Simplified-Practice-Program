@@ -11,14 +11,38 @@ class Division : MathProblem
     bool wholeDivision = false;
     public double divisor;
     int precision = 0;
+    public Division(bool auto) : base(true) { Auto = true; }
     public Division() : base()
     {
-        BufferSize = 100;
-        Console.Write("What's what would you likethe max digit length of the divisor" +
-                " to be??: ");
-        int length = intValidator();
+        if (!Auto)
+        {
+            BufferSize = 100;
+            Console.Write("What's what would you likethe max digit length of the divisor" +
+                    " to be??: ");
+            int length = intValidator();
 
-        this.rows = 2;
+            this.rows = 2;
+
+
+            Console.Write("Do you only want whole division? (y/n) : ");
+            string userInput = Console.ReadLine();
+            if (userInput.ToUpper() == "Y")
+            {
+                wholeDivision = true;
+            }
+            else
+            {
+                wholeDivision = false;
+                Console.Write("What's the max decimal precision  " +
+                    "would you like?: ");
+                precision = intValidator();
+            }
+            MathSetup(length);
+        }
+    }
+
+    public override void MathSetup(int length)
+    {
         if (length >= 1)
         {
             this.length = length;
@@ -26,20 +50,6 @@ class Division : MathProblem
         numMax = (int)(Math.Pow(10, length));
         Numbers = new List<int>();
         symbol = "(/)";
-
-        Console.Write("Do you only want whole division? (y/n) : ");
-        string userInput = Console.ReadLine();
-        if (userInput.ToUpper() == "Y")
-        {
-            wholeDivision = true;
-        }
-        else
-        {
-            wholeDivision = false;
-            Console.Write("What's the max decimal precision  " +
-                "would you like?: ");
-            precision = intValidator();
-        }
     }
 
     public override void Generate()

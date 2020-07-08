@@ -18,18 +18,30 @@ class MathProblem
     public List<int> Numbers { get; set; }
     public int BufferSize { get; set; }
     public int Rounds { get; set; }
+    public bool Auto { get; set; }
+    public string currentType;
+    public bool AutoTrigger { get; set; }
     protected Random rnum = new Random();
     protected bool sort = false;
 
     public MathProblem()
     {
-        BufferSize = 40; //100px default
-        rnum = new Random();
-        Console.Write("How Many problems " +
-                "would you like?: ");
-        Rounds = intValidator();
-
-        
+        if (!Auto)
+        {
+            BufferSize = 40; //100px default
+            rnum = new Random();
+            Console.Write("How Many problems " +
+                    "would you like?: ");
+            Rounds = intValidator();
+        }
+        if (AutoTrigger)
+        {
+            Auto = true;
+        }
+    }
+    public MathProblem(bool auto)
+    {
+        Auto = true;
     }
 
     public virtual void Generate()
@@ -100,6 +112,7 @@ class MathProblem
     {
         return ToString();
     }
-
+    public virtual void MathSetup(int rows, int length){}
+    public virtual void MathSetup(int length) { }
     public virtual string Desc() => "Override This With A Description.";
 }

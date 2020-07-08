@@ -3,39 +3,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Forms;
 
 class Multiplication : MathProblem
 {
+    public Multiplication(bool auto) : base(true) { Auto = true; }
     public Multiplication() : base()
     {
-        Console.Write("How Many rows of numbers" +
-            "would you like?: ");
-        int rows = intValidator();
-        Console.Write("What's the max digit length " +
-                "would you like?: ");
-        int length = intValidator();
-        Console.Write("Would you like the numbers " +
-            "to be sorted? y/n\n: ");
-        string response = "";
-        do
+        if (!Auto)
         {
-            response = Console.ReadLine();
-            if (response.ToUpper() == "Y")
+            Console.Write("How Many rows of numbers" +
+            "would you like?: ");
+            int rows = intValidator();
+            Console.Write("What's the max digit length " +
+                    "would you like?: ");
+            int length = intValidator();
+            Console.Write("Would you like the numbers " +
+                "to be sorted? y/n\n: ");
+            string response = "";
+            do
             {
-                sort = true;
-            }
-            else if (response.ToUpper() == "N")
-            {
-                sort = false;
-            }
-            else
-            {
-                Console.WriteLine("Please enter a valid option.\n: ");
-            }
-        } while (response.ToUpper() != "Y" &&
-        response.ToUpper() != "N");
+                response = Console.ReadLine();
+                if (response.ToUpper() == "Y")
+                {
+                    sort = true;
+                }
+                else if (response.ToUpper() == "N")
+                {
+                    sort = false;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a valid option.\n: ");
+                }
+            } while (response.ToUpper() != "Y" &&
+            response.ToUpper() != "N");
+        }
+    }
 
+    public override void MathSetup(int rows, int length)
+    {
         if (rows >= 1)
         {
             this.rows = rows;
@@ -48,7 +55,6 @@ class Multiplication : MathProblem
         Numbers = new List<int>();
         symbol = "(·)";
     }
-
     public override void Generate()
     {
         base.Generate();
